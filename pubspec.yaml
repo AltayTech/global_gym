@@ -1,0 +1,104 @@
+name: global_gym
+description: A new Flutter application.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^4.0.2
+  http: ^0.12.0+4
+  shared_preferences: ^0.5.6
+  intl: ^0.16.0
+  percent_indicator: ^2.1.1+1
+  smooth_star_rating: ^1.0.4+2
+  flutter_spinkit: ^4.1.1
+  url_launcher: ^5.4.5
+  carousel_slider: ^2.1.0
+  fluttertoast: ^7.0.2
+  numberpicker: ^1.2.1
+  table_calendar: ^2.3.0
+  font_awesome_flutter: ^8.8.1
+
+  cupertino_icons: ^0.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+#    - assets/images/splash_header_pic.jpg
+#    - assets/images/logo.png
+#    - assets/images/survey_ic.png
+#    - assets/images/register_completion_header.png
+#    - assets/images/login_header_ic.png
+#    - assets/images/signup_header_ic.png
+#    - assets/images/membership_header_ic.png
+#    - assets/images/forget_pass_header_ic.png
+#    - assets/images/new_password_header_ic.png
+#    - assets/images/home_page_pic_1.png
+#    - assets/images/home_page_pic_2.png
+#    - assets/images/home_page_pic_3.png
+#    - assets/images/my_diet_header_pic.png
+#    - assets/images/user_sample_pic.png
+#    - assets/images/my_exercise_header_pic.png
+#    - assets/images/my_exercise_detail_header_pic.png
+#    - assets/images/exercise_item_monday.png
+#    - assets/images/my_diet_item_ic.png
+#    - assets/images/diet_item_sample_pic.png
+#    - assets/images/order_meal_header.png
+#    - assets/images/meal_item_sample_pic.png
+#    - assets/images/measurement_header_pic.png
+#    - assets/images/order_history_header.png
+#    - assets/images/order_history_header_2.png
+#    - assets/images/bills_screen_header.png
+
+#    - assets/images/my_diet_weight.png
+#    - assets/images/my_diet_quantity.png
+#    - assets/images/my_diet_fat.png
+#    - assets/images/my_diet_carbs.png
+#    - assets/images/my_diet_protein.png
+#    - assets/images/my_diet_calories.png
+
+    - assets/icons/
+#    - assets/icons/exercise_item_ic_1.png
+#    - assets/icons/exercise_item_ic_2.png
+#    - assets/icons/exercise_item_ic_3.png
+#    - assets/icons/exercise_item_ic_4.png
+#    - assets/icons/measurement_weight.png
+#    - assets/icons/measurement_height.png
+#    - assets/icons/measurement_sleep.png
+#    - assets/icons/measurement_workout.png
+#    - assets/icons/measurement_clock.png
+#    - assets/icons/home_page_qrcode.png
+#    - assets/icons/drawer_menu_exercise.png
+#    - assets/icons/drawer_menu_diet.png
+#    - assets/icons/drawer_menu_measurement.png
+#    - assets/icons/drawer_menu_profile.png
+#    - assets/icons/drawer_menu_bill.png
+#    - assets/icons/drawer_menu_change_pass.png
+#
+#    - assets/images/circle.gif
+
+  fonts:
+
+    - family: CircularStd
+      fonts:
+        - asset: assets/fonts/CircularStd-Black.otf
+#        - asset: assets/fonts/CircularStd-BlackItalic.otf
+        - asset: assets/fonts/CircularStd-Bold.otf
+#        - asset: assets/fonts/CircularStd-BoldItalic.otf
+        - asset: assets/fonts/CircularStd-Book.otf
+#        - asset: assets/fonts/CircularStd-BookItalic.otf
+        - asset: assets/fonts/CircularStd-Medium.otf
+#        - asset: assets/fonts/CircularStd-MediumItalic.otf
+          weight: 700
