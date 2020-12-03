@@ -195,7 +195,6 @@ class _OrderMealItemState extends State<OrderMealItem> {
                                       productCount.toString(),
                                       style: TextStyle(
                                         color: AppTheme.black,
-                                        fontFamily: 'Iransans',
                                         fontSize: textScaleFactor * 14,
                                       ),
                                       textAlign: TextAlign.center,

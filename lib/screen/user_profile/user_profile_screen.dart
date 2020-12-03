@@ -274,17 +274,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   InfoEditItem(
                                     title: 'Last Name',
                                     controller: lastNameController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Given Name',
                                     controller: givenNameController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Date of Birth',
                                     controller: dateOfBirthController,
-                                    keybordType: TextInputType.datetime,
+                                    keyboardType: TextInputType.datetime,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -349,27 +349,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   InfoEditItem(
                                     title: 'Phone number',
                                     controller: phoneNumberController,
-                                    keybordType: TextInputType.phone,
+                                    keyboardType: TextInputType.phone,
                                   ),
                                   InfoEditItem(
                                     title: 'Line 1',
                                     controller: line1Controller,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Line 2',
                                     controller: line2Controller,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Subrub',
                                     controller: subrubController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Postal Code',
                                     controller: postalCodeController,
-                                    keybordType: TextInputType.number,
+                                    keyboardType: TextInputType.number,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 8, bottom: 2, left: 4),
@@ -389,17 +389,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   InfoEditItem(
                                     title: 'Name',
                                     controller: nameRelationController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Relation',
                                     controller: relationController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Phone Number',
                                     controller: phoneNumberRelationController,
-                                    keybordType: TextInputType.phone,
+                                    keyboardType: TextInputType.phone,
                                   ),
                                 ],
                               ),

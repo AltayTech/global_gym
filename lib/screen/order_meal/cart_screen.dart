@@ -155,7 +155,6 @@
 //                                   'تعداد: ' ,
 //                                   style: TextStyle(
 //                                     color: AppTheme.bg,
-//                                     fontFamily: 'Iransans',
 //                                     fontSize: textScaleFactor * 12,
 //                                   ),
 //                                 ),

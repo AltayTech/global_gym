@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/provider/auth.dart';
 import 'package:global_gym/screen/home_screen.dart';
 import 'package:global_gym/screen/user_profile/user_forget_screen.dart';
@@ -92,11 +93,10 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-
-    double deviceHeight = MediaQuery.of(context).size.height;
-
-    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    double deviceHeight = getHeight(context);
+    double bodyHeight = getBodyHeight(context);
+    double deviceWidth = getWidth(context);
+    double textScaleFactor = getTextScaleFactor(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -111,27 +111,27 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
         child: Builder(
           builder: (context) => Container(
             color: AppTheme.white,
-            height: deviceHeight * 0.9,
+            height: bodyHeight,
             child: Stack(
               children: <Widget>[
                 SingleChildScrollView(
                   child: Container(
-                    height: deviceHeight * 0.9,
+                    height: bodyHeight,
                     color: Colors.transparent,
                     child: Padding(
                       padding:
-                          const EdgeInsets.only(top: 8, left: 24, right: 24),
+                          const EdgeInsets.only(top: 0, left: 24, right: 24),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
                             'assets/images/login_header_ic.png',
-                            height: 90,
-                            width: 90,
+                            height: 80,
+                            width: 80,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 16),
+                            padding: const EdgeInsets.only(top: 10, bottom: 16),
                             child: Text(
                               'Login',
                               overflow: TextOverflow.ellipsis,
@@ -147,7 +147,7 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 16, bottom: 16, left: 40, right: 40),
+                                top: 0, bottom: 8, left: 40, right: 40),
                             child: Text(
                               'Enter the following information to log in to your account',
                               overflow: TextOverflow.ellipsis,
@@ -172,13 +172,13 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                                   InfoEditItem(
                                     title: 'Email',
                                     controller: emailController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                     validateMessage: 'Plaese Enter Email',
                                   ),
                                   InfoEditItem(
                                     title: 'Password',
                                     controller: passwordController,
-                                    keybordType: TextInputType.visiblePassword,
+                                    keyboardType: TextInputType.visiblePassword,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -227,7 +227,7 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                           ),
                           Spacer(),
                           Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 32),
+                            padding: const EdgeInsets.only(bottom: 32),
                             child: InkWell(
                               onTap: () async {
                                 if (_formKey.currentState.validate()) {
@@ -277,9 +277,6 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: deviceHeight * 0.02,
-                          )
                         ],
                       ),
                     ),

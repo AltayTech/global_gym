@@ -48,7 +48,6 @@ class NutritionItem extends StatelessWidget {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: AppTheme.black,
-                      fontFamily: 'Iransans',
                       fontSize: textScaleFactor * 18.0,
                     ),
                   ),
@@ -62,7 +61,6 @@ class NutritionItem extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: AppTheme.black,
-                        fontFamily: 'Iransans',
                         fontSize: textScaleFactor * 14.0,
                       ),
                     ),
@@ -73,7 +71,6 @@ class NutritionItem extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: AppTheme.black,
-                        fontFamily: 'Iransans',
                         fontSize: textScaleFactor * 14.0,
                       ),
                     ),
@@ -84,7 +81,6 @@ class NutritionItem extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: AppTheme.black,
-                        fontFamily: 'Iransans',
                         fontSize: textScaleFactor * 14.0,
                       ),
                     ),

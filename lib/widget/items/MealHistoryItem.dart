@@ -57,7 +57,6 @@ class MealHistoryItem extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(
-                              fontFamily: 'Iransans',
                               fontWeight: FontWeight.w700,
                               color: AppTheme.black,
                               fontSize: textScaleFactor * 16.0,
@@ -168,7 +167,6 @@ class DataRow extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
-              fontFamily: 'Iransans',
               color: AppTheme.black,
               fontSize: textScaleFactor * 12.0,
             ),
@@ -182,7 +180,6 @@ class DataRow extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
-              fontFamily: 'Iransans',
               color: AppTheme.grey,
               fontSize: textScaleFactor * 12.0,
             ),

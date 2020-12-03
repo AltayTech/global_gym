@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/models/week_day_exercise.dart';
 import 'package:global_gym/provider/app_theme.dart';
+import 'package:global_gym/provider/dimention.dart';
 import 'package:global_gym/widget/items/exercise_item.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +73,7 @@ class _MyExerciseDetailScreenState extends State<MyExerciseDetailScreen> {
             Positioned(
               top: 0,
               width: deviceWidth,
-              height: 250,
+              height: Dimention.topSpace,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -91,10 +93,10 @@ class _MyExerciseDetailScreenState extends State<MyExerciseDetailScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              top: 250,
+              top: Dimention.topSpace,
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.only(left: 24, right: 24),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,13 +152,9 @@ class _MyExerciseDetailScreenState extends State<MyExerciseDetailScreen> {
                                               ChangeNotifierProvider.value(
                                             value: weekDayExercise
                                                 .UserTraningProgramExercises[i],
-                                            child: Container(
-                                              width: deviceWidth,
-                                              height: 100,
-                                              child: ExerciseItem(
-                                                exercise: weekDayExercise
-                                                    .UserTraningProgramExercises[i],
-                                              ),
+                                            child: ExerciseItem(
+                                              exercise: weekDayExercise
+                                                  .UserTraningProgramExercises[i],
                                             ),
                                           ),
                                         )

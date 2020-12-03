@@ -41,7 +41,6 @@ class BillScreenItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
-                        fontFamily: 'Iransans',
                         fontWeight: FontWeight.w700,
                         color: AppTheme.black,
                         fontSize: textScaleFactor * 16.0,

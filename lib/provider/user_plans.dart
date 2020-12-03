@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:global_gym/models/Bill.dart';
 import 'package:global_gym/models/MainBill.dart';
-import 'file:///C:/AndroidStudioProjects/global%20gym%20project/global_gym/lib/models/orderMeal/MainOrder.dart';
+import 'package:global_gym/models/orderMeal/MainOrder.dart';
 import 'package:global_gym/models/MainReserve.dart';
 import 'package:global_gym/models/Reserve.dart';
 import 'package:global_gym/models/main_exercises.dart';

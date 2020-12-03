@@ -208,7 +208,6 @@ class _OrderCartItemState extends State<OrderCartItem> {
                                             productCount.toString(),
                                             style: TextStyle(
                                               color: AppTheme.black,
-                                              fontFamily: 'Iransans',
                                               fontSize: textScaleFactor * 14,
                                             ),
                                             textAlign: TextAlign.center,
