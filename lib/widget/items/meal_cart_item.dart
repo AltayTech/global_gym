@@ -55,7 +55,7 @@ class _OrderMealItemState extends State<OrderMealItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .removeFoodToCart(foodId);
+        .removeFoodFromCart(foodId);
 
     _isLoading = false;
     setState(() {});
