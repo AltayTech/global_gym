@@ -177,12 +177,14 @@ class UserPlans with ChangeNotifier {
           getOrderCart().then((value) {
             if(value=='true')
             notifyListeners();
-            else if(value == 'empty')
+            else if(value == 'empty') {
               foodOrderInfo = FoodOrderCart(
                   HashFoodOrderId: null,
                   IsEmptyFoodOrder: null,
                   OrderStatusTypes: null,
                   FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+              notifyListeners();
+            }
           });
 
           return mainExercises.IsSuccess.toString();
@@ -433,6 +435,7 @@ class UserPlans with ChangeNotifier {
           IsEmptyFoodOrder: null,
           OrderStatusTypes: null,
           FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+      notifyListeners();
       return 'No item in cart';
     }
   }
@@ -473,14 +476,20 @@ class UserPlans with ChangeNotifier {
         print('oookkkkkkkkkkkk');
 
         if (mainFoodCart.IsSuccess) {
-          notifyListeners();
 
-          foodOrderInfo = mainFoodCart.Value;
+          foodOrderInfo = FoodOrderCart(
+              HashFoodOrderId: null,
+              IsEmptyFoodOrder: null,
+              OrderStatusTypes: null,
+              FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+
           print(mainFoodCart.Message.toString());
 
           final prefs = await SharedPreferences.getInstance();
 
           prefs.setString('hashId', '');
+          getFoodList();
+          notifyListeners();
 
           return mainFoodCart.IsSuccess.toString();
         } else {

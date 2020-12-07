@@ -7,6 +7,7 @@ import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/widget/items/order_cart_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
+import 'package:global_gym/widget/items/snake_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -39,7 +40,7 @@ class _CartScreenState extends State<CartScreen> {
     double deviceWidth = getWidth(context);
     double textScaleFactor = getTextScaleFactor(context);
 
-    if (vm.foodOrderInfo == null)
+    if (vm.foodOrderInfo == null || _isLoadingCart)
       return ProgressWidget();
     else {
       var foodOrderCart = vm.foodOrderInfo;
@@ -124,17 +125,33 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                     Spacer(),
-                    Text(
-                      '\$${foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.SubTotalAmount != null ? foodOrderCart.FoodOrderInfo.SubTotalAmount : 0}',
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'CircularStd',
-                        fontWeight: FontWeight.w600,
-                        fontSize: textScaleFactor * 16.0,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\$',
+                          textAlign: TextAlign.right,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w600,
+                            fontSize: textScaleFactor * 13.0,
+                          ),
+                        ),
+                        Text(
+                          '${foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.SubTotalAmount != null ? foodOrderCart.FoodOrderInfo.SubTotalAmount : 0}',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w600,
+                            fontSize: textScaleFactor * 18.0,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -142,11 +159,10 @@ class _CartScreenState extends State<CartScreen> {
                   padding: const EdgeInsets.only(top: 16),
                   child: InkWell(
                     onTap:
-                        foodOrderCart.FoodOrderInfo.FoodOrderDetails.length > 0
+                    foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.FoodOrderDetails.length > 0
                             ? () async {
                                 await finalizeOrderCart().then((value) async {
-                                  await Navigator.of(context).pop();
-                                  showNotification(context, value.toString());
+                                    SnakeBar.show(context, message: value);
                                 });
                               }
                             : () {},
@@ -154,7 +170,7 @@ class _CartScreenState extends State<CartScreen> {
                       height: 48,
                       width: 366,
                       decoration: BoxDecoration(
-                          color: foodOrderCart
+                          color: foodOrderCart.FoodOrderInfo != null && foodOrderCart
                                       .FoodOrderInfo.FoodOrderDetails.length >
                                   0
                               ? Colors.black
@@ -214,6 +230,7 @@ class _CartScreenState extends State<CartScreen> {
         .finalizeOrderCart()
         .then((value) {
       if (value == 'true') {
+        widget.panelController.close();
         return 'Order is send successfully';
       } else {
         return value;
@@ -225,23 +242,4 @@ class _CartScreenState extends State<CartScreen> {
     return isSent;
   }
 
-  Future<void> showNotification(BuildContext ctx, String message) async {
-    SnackBar addToCartSnackBar = SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'CircularStd',
-          fontSize: 14.0,
-        ),
-      ),
-      action: SnackBarAction(
-        label: 'Ok',
-        onPressed: () {
-          // Some code to undo the change.
-        },
-      ),
-    );
-    Scaffold.of(ctx).showSnackBar(addToCartSnackBar);
-  }
 }

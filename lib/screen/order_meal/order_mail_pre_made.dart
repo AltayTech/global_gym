@@ -42,62 +42,12 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
     super.initState();
   }
 
-  Future<void> showNotification(BuildContext ctx, String message) async {
-    SnackBar addToCartSnackBar = SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'CircularStd',
-          fontSize: 14.0,
-        ),
-      ),
-      action: SnackBarAction(
-        label: 'Ok',
-        onPressed: () {
-          // Some code to undo the change.
-        },
-      ),
-    );
-    Scaffold.of(ctx).showSnackBar(addToCartSnackBar);
-  }
-
-  // @override
-  // void didChangeDependencies() async {
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //
-  //     await getFoodList().then((value) async {
-  //       if (value == 'true') {
-  //         print(value.toString());
-  //         // Navigator.of(context).pushNamed(
-  //         //     UserNewPasswordScreen.routeName);
-  //
-  //         foodGroupList =
-  //             Provider.of<UserPlans>(context, listen: false).foodGroupList;
-  //       } else {
-  //         print('dsfsdssssssssssssssssssss');
-  //
-  //         _snackBarMessage = value;
-  //         showNotification(context, _snackBarMessage);
-  //       }
-  //     });
-  //
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   _isInit = false;
-  //   super.didChangeDependencies();
-  // }
-
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final vm = Provider.of<UserPlans>(context);
+
 
     return Scaffold(
         backgroundColor: Colors.white,
