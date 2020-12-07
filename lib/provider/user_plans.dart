@@ -138,7 +138,9 @@ class UserPlans with ChangeNotifier {
 
 // fetch the food items from
 
-  List<FoodGroup> foodGroupList = [];
+  List<FoodGroup> foodGroupList;
+
+  FoodOrderCart foodOrderInfo;
 
   Future<String> getFoodList() async {
     print('getFoodList');
@@ -169,10 +171,19 @@ class UserPlans with ChangeNotifier {
         MainFoodGroup mainExercises = MainFoodGroup.fromMap(responseData);
 
         if (mainExercises.IsSuccess) {
-          notifyListeners();
 
           foodGroupList = mainExercises.Value;
           print(mainExercises.Message.toString());
+          getOrderCart().then((value) {
+            if(value=='true')
+            notifyListeners();
+            else if(value == 'empty')
+              foodOrderInfo = FoodOrderCart(
+                  HashFoodOrderId: null,
+                  IsEmptyFoodOrder: null,
+                  OrderStatusTypes: null,
+                  FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+          });
 
           return mainExercises.IsSuccess.toString();
         } else {
@@ -229,11 +240,11 @@ class UserPlans with ChangeNotifier {
       if (mainFoodCart.IsSuccess) {
         foodOrderInfo = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
+        notifyListeners();
 
         final prefs = await SharedPreferences.getInstance();
         _hashId = mainFoodCart.Value.HashFoodOrderId;
         prefs.setString('hashId', _hashId);
-        notifyListeners();
 
         return mainFoodCart.IsSuccess.toString();
       } else {
@@ -280,10 +291,10 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        notifyListeners();
 
         foodOrderInfo = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
+        notifyListeners();
 
         final prefs = await SharedPreferences.getInstance();
         _hashId = mainFoodCart.Value.HashFoodOrderId;
@@ -335,10 +346,10 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        notifyListeners();
 
         foodOrderInfo = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
+        notifyListeners();
 
         final prefs = await SharedPreferences.getInstance();
         _hashId = mainFoodCart.Value.HashFoodOrderId;
@@ -358,7 +369,6 @@ class UserPlans with ChangeNotifier {
     }
   }
 
-  FoodOrderCart foodOrderInfo = FoodOrderCart();
 
   Future<String> getOrderCart() async {
     print('getOrderCart');

@@ -59,16 +59,25 @@ class FoodOrder with ChangeNotifier {
   factory FoodOrder.fromMap(Map<String, dynamic> map) {
     List<FoodCart> foods = [];
 
-    if (map['FoodOrderDetails'] != null) {
-      var nutritionList = map['FoodOrderDetails'] as List;
-      foods = nutritionList.map((i) => FoodCart.fromMap(i)).toList();
-    }
-
-    return new FoodOrder(
-      SubTotalAmount: map['SubTotalAmount'],
-      FoodOrderDetailsCount: map['FoodOrderDetailsCount'],
+    if(map!=null)
+    {
+      if (map['FoodOrderDetails'] != null) {
+        var nutritionList = map['FoodOrderDetails'] as List;
+        foods = nutritionList.map((i) => FoodCart.fromMap(i)).toList();
+      }
+      return new FoodOrder(
+        SubTotalAmount: map['SubTotalAmount'],
+        FoodOrderDetailsCount: map['FoodOrderDetailsCount'],
+        FoodOrderDetails: foods,
+      );
+    } else return FoodOrder(
+      SubTotalAmount: 0.0,
+      FoodOrderDetailsCount: 0,
       FoodOrderDetails: foods,
     );
+
+
+
   }
 
   Map<String, dynamic> toMap() {

@@ -27,17 +27,13 @@ class _OrderCartItemState extends State<OrderCartItem> {
 
   bool _isLoading = false;
 
+
   Future<String> addToCart(int foodId) async {
     _isLoading = true;
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .addFoodToCart(foodId)
-        .then((value) {
-      if (value == 'true') {
-        productCount = productCount + 1;
-      } else {}
-    });
+        .addFoodToCart(foodId);
     print(isSent);
     _isLoading = false;
     setState(() {});
@@ -49,12 +45,7 @@ class _OrderCartItemState extends State<OrderCartItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .decreaseFoodToCart(foodId)
-        .then((value) {
-      if (value == 'true') {
-        productCount = productCount - 1;
-      } else {}
-    });
+        .decreaseFoodToCart(foodId);
     _isLoading = false;
     setState(() {});
     return isSent;
@@ -65,36 +56,13 @@ class _OrderCartItemState extends State<OrderCartItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .removeFoodFromCart(foodId)
-        .then((value) {
-      if (value == 'true') {
-        productCount = 0;
-        widget.fcn;
-      } else {}
-    });
+        .removeFoodFromCart(foodId);
 
     _isLoading = false;
     setState(() {});
     return isSent;
   }
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      productCount = widget.food.Quantity;
-
-      setState(() {
-        _isLoading = false;
-      });
-    }
-    _isInit = false;
-
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +70,19 @@ class _OrderCartItemState extends State<OrderCartItem> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var currencyFormat = intl.NumberFormat.decimalPattern();
+
+    final vm = Provider.of<UserPlans>(context);
+
+    if(vm.foodOrderInfo!=null && vm.foodOrderInfo.FoodOrderInfo != null) {
+      List<FoodCart> foodCart = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails;
+
+      if (foodCart.map((e) => e.FoodId).contains(widget.food.FoodId))
+        productCount = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails
+            .firstWhere((element) => element.FoodId == widget.food.FoodId)
+            .Quantity;
+      else
+        productCount = 0;
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 4, bottom: 4),

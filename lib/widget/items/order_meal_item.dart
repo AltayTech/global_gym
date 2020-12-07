@@ -1,7 +1,11 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:global_gym/models/orderMeal/Food.dart';
+import 'package:global_gym/models/orderMeal/FoodCart.dart';
+import 'package:global_gym/models/orderMeal/FoodOrder.dart';
+import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
 import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:intl/intl.dart' as intl;
@@ -25,12 +29,7 @@ class _OrderMealItemState extends State<OrderMealItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .addFoodToCart(foodId)
-        .then((value) {
-      if (value == 'true') {
-        productCount = productCount + 1;
-      } else {}
-    });
+        .addFoodToCart(foodId);
     print(isSent);
     _isLoading = false;
     setState(() {});
@@ -42,12 +41,7 @@ class _OrderMealItemState extends State<OrderMealItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .decreaseFoodToCart(foodId)
-        .then((value) {
-      if (value == 'true') {
-        productCount = productCount - 1;
-      } else {}
-    });
+        .decreaseFoodToCart(foodId);
     _isLoading = false;
     setState(() {});
     return isSent;
@@ -58,12 +52,7 @@ class _OrderMealItemState extends State<OrderMealItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .removeFoodFromCart(foodId)
-        .then((value) {
-      if (value == 'true') {
-        productCount = 0;
-      } else {}
-    });
+        .removeFoodFromCart(foodId);
 
     _isLoading = false;
     setState(() {});
@@ -76,6 +65,18 @@ class _OrderMealItemState extends State<OrderMealItem> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var currencyFormat = intl.NumberFormat.decimalPattern();
+    final vm = Provider.of<UserPlans>(context);
+
+    if(vm.foodOrderInfo!=null && vm.foodOrderInfo.FoodOrderInfo != null) {
+      List<FoodCart> foodCart = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails;
+
+      if (foodCart.map((e) => e.FoodId).contains(widget.food.Id))
+        productCount = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails
+            .firstWhere((element) => element.FoodId == widget.food.Id)
+            .Quantity;
+      else
+        productCount = 0;
+    }
 
     return Padding(
       padding: const EdgeInsets.only(top: 4, bottom: 4),

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/models/orderMeal/Food.dart';
+import 'package:global_gym/models/orderMeal/FoodCart.dart';
 import 'package:global_gym/models/orderMeal/FoodGroup.dart';
 import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
 import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/dimention.dart';
+import 'package:global_gym/provider/strings.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/screen/order_meal/cart_screen.dart';
 import 'package:global_gym/widget/items/order_cart_item.dart';
 import 'package:global_gym/widget/items/order_meal_item.dart';
+import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -29,26 +32,14 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
 
   String _snackBarMessage = '';
 
-  List<FoodGroup> foodGroupList = [];
-
-
   final PanelController panelController = PanelController();
 
   bool hideFAB = false;
 
-  Future<String> getFoodList() async {
-    _isLoading = true;
-    setState(() {});
-
-    String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .getFoodList()
-        .then((value) {
-      if (value == 'true') {}
-    });
-
-    _isLoading = false;
-    setState(() {});
-    return isSent;
+  @override
+  void initState() {
+    Provider.of<UserPlans>(context, listen: false).getFoodList();
+    super.initState();
   }
 
   Future<void> showNotification(BuildContext ctx, String message) async {
@@ -71,45 +62,42 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
     Scaffold.of(ctx).showSnackBar(addToCartSnackBar);
   }
 
-  @override
-  void didChangeDependencies() async {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      await getFoodList().then((value) async {
-        if (value == 'true') {
-          print(value.toString());
-          // Navigator.of(context).pushNamed(
-          //     UserNewPasswordScreen.routeName);
-
-          foodGroupList =
-              Provider.of<UserPlans>(context, listen: false).foodGroupList;
-        } else {
-          print('dsfsdssssssssssssssssssss');
-
-          _snackBarMessage = value;
-          showNotification(context, _snackBarMessage);
-        }
-      });
-
-      setState(() {
-        _isLoading = false;
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() async {
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //
+  //     await getFoodList().then((value) async {
+  //       if (value == 'true') {
+  //         print(value.toString());
+  //         // Navigator.of(context).pushNamed(
+  //         //     UserNewPasswordScreen.routeName);
+  //
+  //         foodGroupList =
+  //             Provider.of<UserPlans>(context, listen: false).foodGroupList;
+  //       } else {
+  //         print('dsfsdssssssssssssssssssss');
+  //
+  //         _snackBarMessage = value;
+  //         showNotification(context, _snackBarMessage);
+  //       }
+  //     });
+  //
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  //   _isInit = false;
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    List<Food> foodList = [];
-    double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    foodGroupList = Provider.of<UserPlans>(context).foodGroupList;
-    foodGroupList.map((e) => foodList.addAll(e.Foods)).toList();
+    final vm = Provider.of<UserPlans>(context);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -173,61 +161,8 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
-                        child: Container(
-                            child: _isLoading
-                                ? SpinKitFadingCircle(
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: index.isEven
-                                              ? AppTheme.spinerColor
-                                              : AppTheme.spinerColor,
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : foodGroupList.length > 0
-                                    ? ListView(
-                                        padding: EdgeInsets.all(0),
-                                        children: foodList
-                                            .map((e) => Container(
-                                                  width: deviceWidth,
-                                                  height: 130,
-                                                  child: OrderMealItem(
-                                                    food: e,
-                                                  ),
-                                                ))
-                                            .toList(),
-                                      )
-                                    : Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 8.0),
-                                              child: Text(
-                                                'You Have No Diet List',
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.right,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontFamily: 'CircularStd',
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize:
-                                                      textScaleFactor * 16.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                      ),
+                          padding: const EdgeInsets.only(left: 16, right: 16),
+                          child: buildContent(context, vm)),
                     ),
                   ],
                 ),
@@ -249,7 +184,9 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                   controller: panelController,
                   maxHeight: getPercentsOfHeight(context, 70),
                   minHeight: 0,
-                  panel: CartScreen())
+                  panel: CartScreen(
+                    panelController: panelController,
+                  ))
             ],
           ),
         ),
@@ -257,7 +194,6 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
             ? null
             : FloatingActionButton(
                 onPressed: () async {
-
                   panelController.open();
                 },
                 backgroundColor: Colors.black,
@@ -266,5 +202,55 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                   color: Colors.white,
                 ),
               ));
+  }
+
+  Widget buildContent(BuildContext context, UserPlans vm) {
+    if (vm.foodGroupList == null || vm.foodOrderInfo == null)
+      return ProgressWidget();
+    else {
+      List<Food> foodList = [];
+      vm.foodGroupList.map((e) => foodList.addAll(e.Foods)).toList();
+
+      return Container(
+        child: _isLoading
+            ? ProgressWidget()
+            : vm.foodGroupList.length > 0
+                ? ListView.builder(
+                    itemCount: foodList.length,
+                    padding: EdgeInsets.all(0),
+                    itemBuilder: (ctx, index) {
+                      return Container(
+                        width: getWidth(context),
+                        height: 130,
+                        child: OrderMealItem(
+                          food: foodList[index],
+                        ),
+                      );
+                    },
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            'You Have No Diet List',
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.right,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontFamily: 'CircularStd',
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: getTextScaleFactor(context) * 16.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+      );
+    }
   }
 }
