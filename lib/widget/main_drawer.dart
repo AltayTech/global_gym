@@ -10,7 +10,7 @@ import 'package:global_gym/screen/measurment/MyMeasurementScreen.dart';
 import 'package:global_gym/screen/my_diet_Screen.dart';
 import 'package:global_gym/screen/my_exercise_screen.dart';
 import 'package:global_gym/screen/order_history/OrderHistoryScreen.dart';
-import 'package:global_gym/screen/order_meal/order_mail_pre_made.dart';
+import 'package:global_gym/screen/order_meal/order_meal_pre_made.dart';
 import 'package:global_gym/screen/user_profile/user_change_password_screen.dart';
 import 'package:global_gym/screen/user_profile/user_forget_screen.dart';
 import 'package:global_gym/screen/user_profile/user_membership_screen.dart';
