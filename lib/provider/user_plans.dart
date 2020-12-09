@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:global_gym/models/Bill.dart';
 import 'package:global_gym/models/MainBill.dart';
+import 'package:global_gym/models/orderMeal/FoodHistoryOrder.dart';
+import 'package:global_gym/models/orderMeal/HistoryFoodCart.dart';
 import 'package:global_gym/models/orderMeal/MainOrder.dart';
 import 'package:global_gym/models/MainReserve.dart';
 import 'package:global_gym/models/Reserve.dart';
@@ -171,13 +173,12 @@ class UserPlans with ChangeNotifier {
         MainFoodGroup mainExercises = MainFoodGroup.fromMap(responseData);
 
         if (mainExercises.IsSuccess) {
-
           foodGroupList = mainExercises.Value;
           print(mainExercises.Message.toString());
           getOrderCart().then((value) {
-            if(value=='true')
-            notifyListeners();
-            else if(value == 'empty') {
+            if (value == 'true')
+              notifyListeners();
+            else if (value == 'empty') {
               foodOrderInfo = FoodOrderCart(
                   HashFoodOrderId: null,
                   IsEmptyFoodOrder: null,
@@ -293,7 +294,6 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-
         foodOrderInfo = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
         notifyListeners();
@@ -348,7 +348,6 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-
         foodOrderInfo = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
         notifyListeners();
@@ -370,7 +369,6 @@ class UserPlans with ChangeNotifier {
       throw error;
     }
   }
-
 
   Future<String> getOrderCart() async {
     print('getOrderCart');
@@ -476,7 +474,6 @@ class UserPlans with ChangeNotifier {
         print('oookkkkkkkkkkkk');
 
         if (mainFoodCart.IsSuccess) {
-
           foodOrderInfo = FoodOrderCart(
               HashFoodOrderId: null,
               IsEmptyFoodOrder: null,
@@ -685,7 +682,14 @@ class UserPlans with ChangeNotifier {
     }
   }
 
-  List<Bill> billList;
+  List<Bill> _billsList;
+
+  List<Bill> get billsList => _billsList;
+
+  set billsList(List<Bill> bill){
+    _billsList = bill;
+    notifyListeners();
+  }
 
   Future<String> getBillList() async {
     print('getBillList');
@@ -714,30 +718,23 @@ class UserPlans with ChangeNotifier {
       final responseData = json.decode(response.body);
       print(responseData);
 
-      try {
-        MainBill mainBill = MainBill.fromJson(responseData);
-        print('oookkkkkkkkkkkk');
+      MainBill mainBill = MainBill.fromJson(responseData);
+      print('oookkkkkkkkkkkk');
 
-        if (mainBill.IsSuccess) {
-          notifyListeners();
+      if (mainBill.IsSuccess) {
+        _billsList = mainBill.Value;
 
-          billList = mainBill.Value;
+        print(mainBill.Message.toString());
+        // notifyListeners();
 
-          print(mainBill.Message.toString());
+        return mainBill.IsSuccess.toString();
+      } else {
+        print(mainBill.Message.toString());
 
-          return mainBill.IsSuccess.toString();
-        } else {
-          print(mainBill.Message.toString());
-
-          return mainBill.Message;
-        }
-      } catch (error) {
-        notifyListeners();
-        print('sssssssssssssssssssssss');
-
-        return false.toString();
+        return mainBill.Message;
       }
     } catch (error) {
+      // notifyListeners();
       print(error.toString());
       throw error;
     }
@@ -801,4 +798,66 @@ class UserPlans with ChangeNotifier {
       throw error;
     }
   }
+
+
+  HistoryFoodCard _historyOrderDetails;
+
+  HistoryFoodCard get historyOrderDetails => _historyOrderDetails;
+
+  set historyOrderDetails(HistoryFoodCard historyFoodCard){
+    _historyOrderDetails = historyFoodCard;
+    notifyListeners();
+  }
+
+  Future<String> getHistoryOrderDetails(int _orderId) async {
+    print('getOrderHistoryCart');
+
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+      final url = Urls.rootUrl +
+          Urls.getFoodOrderHistoryDetailsEndPoint +
+          '?Id=$_orderId';
+
+      try {
+        final response = await http.get(
+          url,
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'version': Urls.versionCode
+          },
+        );
+
+        final responseData = json.decode(response.body);
+
+        MainHistoryFoodCart mainHistoryFoodCart = MainHistoryFoodCart.fromMap(responseData);
+
+        if (mainHistoryFoodCart.IsSuccess) {
+          _historyOrderDetails = mainHistoryFoodCart.Value;
+          print(mainHistoryFoodCart.Message.toString());
+
+          notifyListeners();
+          return mainHistoryFoodCart.IsSuccess.toString();
+        } else {
+          print(mainHistoryFoodCart.Message.toString());
+          return mainHistoryFoodCart.Message;
+        }
+      } catch (error) {
+        notifyListeners();
+        print(error.toString());
+        throw error;
+      }
+
+      historyOrderDetails = HistoryFoodCard(
+          Id: null, SubTotalAmount: null,
+          FoodOrderDetailsCount: null,
+          FoodOrderDetails: []);
+      notifyListeners();
+      return 'No item in cart';
+  }
+
 }

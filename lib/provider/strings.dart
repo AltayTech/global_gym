@@ -1,5 +1,5 @@
 class Strings {
-  static const appTitle = 'Tapsalon';
+  static const appTitle = 'Global GYM';
 
   // NavigationBotton title
   static const navHome = 'خانه';

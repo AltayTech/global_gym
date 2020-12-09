@@ -7,20 +7,20 @@ import 'package:global_gym/provider/user_plans.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-class OrderCartItem extends StatefulWidget {
+class HistoryOrderCartItem extends StatefulWidget {
   final FoodCart food;
-  final Function fcn;
+  final bool canEdit;
 
-  OrderCartItem({
+  HistoryOrderCartItem({
     this.food,
-    this.fcn,
+    this.canEdit,
   });
 
   @override
   _OrderCartItemState createState() => _OrderCartItemState();
 }
 
-class _OrderCartItemState extends State<OrderCartItem> {
+class _OrderCartItemState extends State<HistoryOrderCartItem> {
   int productCount = 0;
 
   bool _isLoading = false;
@@ -71,15 +71,8 @@ class _OrderCartItemState extends State<OrderCartItem> {
 
     final vm = Provider.of<UserPlans>(context);
 
-    if(vm.foodOrderInfo!=null && vm.foodOrderInfo.FoodOrderInfo != null) {
-      List<FoodCart> foodCart = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails;
-
-      if (foodCart.map((e) => e.FoodId).contains(widget.food.FoodId))
-        productCount = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails
-            .firstWhere((element) => element.FoodId == widget.food.FoodId)
-            .Quantity;
-      else
-        productCount = 0;
+    if(vm.historyOrderDetails!=null && vm.historyOrderDetails.FoodOrderDetails!=null) {
+        productCount = vm.historyOrderDetails.FoodOrderDetails.firstWhere((element) => element.FoodId == widget.food.FoodId).Quantity;
     }
 
     return Padding(
@@ -140,7 +133,7 @@ class _OrderCartItemState extends State<OrderCartItem> {
                                   ),
                                 ),
                                 Spacer(),
-                                Container(
+                                widget.canEdit ? Container(
                                   height: 40,
                                   width: 100,
                                   color: Colors.amber,
@@ -197,8 +190,22 @@ class _OrderCartItemState extends State<OrderCartItem> {
                                             )),
                                       )),
                                     ],
+                                  )
+                                ) : Container(
+                                  height: 40,
+                                  width: 40,
+                                  color: Colors.amber,
+                                  child: Center(
+                                    child: Text(
+                                      productCount.toString(),
+                                      style: TextStyle(
+                                        color: AppTheme.black,
+                                        fontSize: textScaleFactor * 14,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),

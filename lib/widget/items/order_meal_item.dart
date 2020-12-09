@@ -77,7 +77,7 @@ class _OrderMealItemState extends State<OrderMealItem> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: 4, bottom: 4),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Stack(
         children: [
           Container(
