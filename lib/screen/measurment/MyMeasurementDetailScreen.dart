@@ -75,8 +75,11 @@ class _MyMeasurementDetailScreenState extends State<MyMeasurementDetailScreen> {
     _timer = Timer.periodic(const Duration(milliseconds: 500),(_timer)
     {
       setState(() {
-        if(_progressValue < measurement.ActivityLevel)
+        if(_progressValue < measurement.ActivityLevel) {
           _progressValue++;
+          if(_progressValue==measurement.ActivityLevel)
+            _timer.cancel();
+        }
       });
     });
   }
