@@ -74,7 +74,6 @@ class _UserChangePasswordScreenState extends State<UserChangePasswordScreen> {
         message,
         style: TextStyle(
           color: Colors.white,
-          fontFamily: 'Iransans',
           fontSize: 14.0,
         ),
       ),
@@ -153,12 +152,12 @@ class _UserChangePasswordScreenState extends State<UserChangePasswordScreen> {
                                   InfoEditItem(
                                     title: 'New Password',
                                     controller: passwordController,
-                                    keybordType: TextInputType.visiblePassword,
+                                    keyboardType: TextInputType.visiblePassword,
                                   ),
                                   InfoEditItem(
                                     title: 'Repeat Password',
                                     controller: rePasswordController,
-                                    keybordType: TextInputType.visiblePassword,
+                                    keyboardType: TextInputType.visiblePassword,
                                   ),
                                 ],
                               ),

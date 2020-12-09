@@ -272,17 +272,17 @@ class _UserMembershipScreenState extends State<UserMembershipScreen> {
                                   InfoEditItem(
                                     title: 'Account Number',
                                     controller: accountNumberController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Account Name',
                                     controller: accountNameController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Bank Name',
                                     controller: bankNameController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                   ),
                                 ],
                               ),

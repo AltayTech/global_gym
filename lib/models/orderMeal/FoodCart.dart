@@ -84,7 +84,7 @@ class FoodCart {
     return new FoodCart(
       FoodId: map['FoodId'],
       FoodName: map['FoodName'],
-      FoodPicPath: map['FoodPicPath'] != null &&map['FoodPicPath'] != '' ? map['FoodPicPath'] : '',
+      FoodPicPath: map['FoodPicPath'] != null && map['FoodPicPath'] != '' ? map['FoodPicPath'] : '',
       Fee: map['Fee'],
       DiscountPercent: map['DiscountPercent'],
       FinalPrice: map['FinalPrice'],

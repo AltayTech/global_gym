@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:global_gym/models/Bill.dart';
 import 'package:global_gym/models/MainBill.dart';
-import 'file:///C:/AndroidStudioProjects/global%20gym%20project/global_gym/lib/models/orderMeal/MainOrder.dart';
+import 'package:global_gym/models/orderMeal/MainOrder.dart';
 import 'package:global_gym/models/MainReserve.dart';
 import 'package:global_gym/models/Reserve.dart';
 import 'package:global_gym/models/main_exercises.dart';
@@ -138,7 +138,9 @@ class UserPlans with ChangeNotifier {
 
 // fetch the food items from
 
-  List<FoodGroup> foodGroupList = [];
+  List<FoodGroup> foodGroupList;
+
+  FoodOrderCart foodOrderInfo;
 
   Future<String> getFoodList() async {
     print('getFoodList');
@@ -169,10 +171,21 @@ class UserPlans with ChangeNotifier {
         MainFoodGroup mainExercises = MainFoodGroup.fromMap(responseData);
 
         if (mainExercises.IsSuccess) {
-          notifyListeners();
 
           foodGroupList = mainExercises.Value;
           print(mainExercises.Message.toString());
+          getOrderCart().then((value) {
+            if(value=='true')
+            notifyListeners();
+            else if(value == 'empty') {
+              foodOrderInfo = FoodOrderCart(
+                  HashFoodOrderId: null,
+                  IsEmptyFoodOrder: null,
+                  OrderStatusTypes: null,
+                  FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+              notifyListeners();
+            }
+          });
 
           return mainExercises.IsSuccess.toString();
         } else {
@@ -224,32 +237,24 @@ class UserPlans with ChangeNotifier {
       final responseData = json.decode(response.body);
       print(responseData);
 
-      try {
-        MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+      MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
-        if (mainFoodCart.IsSuccess) {
-          notifyListeners();
-
-          foodOrderInfo = mainFoodCart.Value;
-          print(mainFoodCart.Message.toString());
-
-          final prefs = await SharedPreferences.getInstance();
-          _hashId = mainFoodCart.Value.HashFoodOrderId;
-          prefs.setString('hashId', _hashId);
-
-          return mainFoodCart.IsSuccess.toString();
-        } else {
-          print(mainFoodCart.Message.toString());
-
-          return mainFoodCart.Message;
-        }
-      } catch (error) {
+      if (mainFoodCart.IsSuccess) {
+        foodOrderInfo = mainFoodCart.Value;
+        print(mainFoodCart.Message.toString());
         notifyListeners();
-        print('sssssssssssssssssssssss');
 
-        return false.toString();
+        final prefs = await SharedPreferences.getInstance();
+        _hashId = mainFoodCart.Value.HashFoodOrderId;
+        prefs.setString('hashId', _hashId);
+
+        return mainFoodCart.IsSuccess.toString();
+      } else {
+        print(mainFoodCart.Message.toString());
+        return mainFoodCart.Message;
       }
     } catch (error) {
+      notifyListeners();
       print(error.toString());
       throw error;
     }
@@ -285,42 +290,36 @@ class UserPlans with ChangeNotifier {
       final responseData = json.decode(response.body);
       print(responseData);
 
-      try {
-        MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+      MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
-        if (mainFoodCart.IsSuccess) {
-          notifyListeners();
+      if (mainFoodCart.IsSuccess) {
 
-          foodOrderInfo = mainFoodCart.Value;
-          print(mainFoodCart.Message.toString());
-
-          final prefs = await SharedPreferences.getInstance();
-          _hashId = mainFoodCart.Value.HashFoodOrderId;
-
-          prefs.setString('hashId', _hashId);
-
-          return mainFoodCart.IsSuccess.toString();
-        } else {
-          print(mainFoodCart.Message.toString());
-
-          return mainFoodCart.Message;
-        }
-      } catch (error) {
+        foodOrderInfo = mainFoodCart.Value;
+        print(mainFoodCart.Message.toString());
         notifyListeners();
-        print('sssssssssssssssssssssss');
 
-        return false.toString();
+        final prefs = await SharedPreferences.getInstance();
+        _hashId = mainFoodCart.Value.HashFoodOrderId;
+
+        prefs.setString('hashId', _hashId);
+
+        return mainFoodCart.IsSuccess.toString();
+      } else {
+        print(mainFoodCart.Message.toString());
+
+        return mainFoodCart.Message;
       }
     } catch (error) {
       print(error.toString());
+      notifyListeners();
       throw error;
     }
   }
 
-  Future<String> removeFoodToCart(int foodId) async {
+  Future<String> removeFoodFromCart(int foodId) async {
     print('decreaseFoodToCart');
 
-    final url = Urls.rootUrl + Urls.removeFoodToCartEndPoint;
+    final url = Urls.rootUrl + Urls.removeFoodFromCartEndPoint;
 
     print(url);
     final prefs = await SharedPreferences.getInstance();
@@ -346,39 +345,32 @@ class UserPlans with ChangeNotifier {
       final responseData = json.decode(response.body);
       print(responseData);
 
-      try {
-        MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+      MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
-        if (mainFoodCart.IsSuccess) {
-          notifyListeners();
+      if (mainFoodCart.IsSuccess) {
 
-          foodOrderInfo = mainFoodCart.Value;
-          print(mainFoodCart.Message.toString());
-
-          final prefs = await SharedPreferences.getInstance();
-          _hashId = mainFoodCart.Value.HashFoodOrderId;
-
-          prefs.setString('hashId', _hashId);
-
-          return mainFoodCart.IsSuccess.toString();
-        } else {
-          print(mainFoodCart.Message.toString());
-
-          return mainFoodCart.Message;
-        }
-      } catch (error) {
+        foodOrderInfo = mainFoodCart.Value;
+        print(mainFoodCart.Message.toString());
         notifyListeners();
-        print('sssssssssssssssssssssss');
 
-        return false.toString();
+        final prefs = await SharedPreferences.getInstance();
+        _hashId = mainFoodCart.Value.HashFoodOrderId;
+
+        prefs.setString('hashId', _hashId);
+
+        return mainFoodCart.IsSuccess.toString();
+      } else {
+        print(mainFoodCart.Message.toString());
+
+        return mainFoodCart.Message;
       }
     } catch (error) {
       print(error.toString());
+      notifyListeners();
       throw error;
     }
   }
 
-  FoodOrderCart foodOrderInfo;
 
   Future<String> getOrderCart() async {
     print('getOrderCart');
@@ -395,8 +387,6 @@ class UserPlans with ChangeNotifier {
           Urls.getFoodToCartEndPoint +
           '?HashFoodOrderId=$_hashId';
 
-      print(url);
-
       try {
         final response = await http.get(
           url,
@@ -407,39 +397,35 @@ class UserPlans with ChangeNotifier {
             // 'version': Urls.versionCode
           },
         );
-        print(response.body);
 
         final responseData = json.decode(response.body);
-        print(responseData);
 
-        try {
-          MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
-          print('oookkkkkkkkkkkk');
+        MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
-          if (mainFoodCart.IsSuccess) {
-            notifyListeners();
+        if (mainFoodCart.IsSuccess) {
+          foodOrderInfo = mainFoodCart.Value;
+          print(mainFoodCart.Message.toString());
 
-            foodOrderInfo = mainFoodCart.Value;
-            print(mainFoodCart.Message.toString());
+          final prefs = await SharedPreferences.getInstance();
+          _hashId = mainFoodCart.Value.HashFoodOrderId;
 
-            final prefs = await SharedPreferences.getInstance();
-            _hashId = mainFoodCart.Value.HashFoodOrderId;
+          prefs.setString('hashId', _hashId);
 
-            prefs.setString('hashId', _hashId);
-
-            return mainFoodCart.IsSuccess.toString();
-          } else {
-            print(mainFoodCart.Message.toString());
-
-            return mainFoodCart.Message;
-          }
-        } catch (error) {
           notifyListeners();
-          print('sssssssssssssssssssssss');
-
-          return false.toString();
+          return mainFoodCart.IsSuccess.toString();
+        } else if (!mainFoodCart.IsSuccess) {
+          if (mainFoodCart.Value.IsEmptyFoodOrder) {
+            prefs.setString('hashId', _hashId);
+            notifyListeners();
+            return "empty";
+          } else
+            return mainFoodCart.Message;
+        } else {
+          print(mainFoodCart.Message.toString());
+          return mainFoodCart.Message;
         }
       } catch (error) {
+        notifyListeners();
         print(error.toString());
         throw error;
       }
@@ -449,6 +435,7 @@ class UserPlans with ChangeNotifier {
           IsEmptyFoodOrder: null,
           OrderStatusTypes: null,
           FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+      notifyListeners();
       return 'No item in cart';
     }
   }
@@ -489,14 +476,20 @@ class UserPlans with ChangeNotifier {
         print('oookkkkkkkkkkkk');
 
         if (mainFoodCart.IsSuccess) {
-          notifyListeners();
 
-          foodOrderInfo = mainFoodCart.Value;
+          foodOrderInfo = FoodOrderCart(
+              HashFoodOrderId: null,
+              IsEmptyFoodOrder: null,
+              OrderStatusTypes: null,
+              FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+
           print(mainFoodCart.Message.toString());
 
           final prefs = await SharedPreferences.getInstance();
 
           prefs.setString('hashId', '');
+          getFoodList();
+          notifyListeners();
 
           return mainFoodCart.IsSuccess.toString();
         } else {
@@ -692,7 +685,6 @@ class UserPlans with ChangeNotifier {
     }
   }
 
-
   List<Bill> billList;
 
   Future<String> getBillList() async {
@@ -703,8 +695,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    final url =
-        Urls.rootUrl + Urls.getFPaymentsEndPoint ;
+    final url = Urls.rootUrl + Urls.getFPaymentsEndPoint;
 
     print(url);
 
@@ -751,7 +742,8 @@ class UserPlans with ChangeNotifier {
       throw error;
     }
   }
-  List<Order> orderList=[];
+
+  List<Order> orderList = [];
 
   Future<String> getOrderList() async {
     print('getOrderList');
@@ -762,7 +754,7 @@ class UserPlans with ChangeNotifier {
     print(_token);
 
     final url =
-        Urls.rootUrl + Urls.getFoodOrderHistoryEndPoint+'/?OrderStatusType=1' ;
+        Urls.rootUrl + Urls.getFoodOrderHistoryEndPoint + '/?OrderStatusType=1';
 
     print(url);
 

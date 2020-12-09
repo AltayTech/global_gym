@@ -1,558 +1,245 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
-// import 'package:global_gym/provider/app_theme.dart';
-// import 'package:intl/intl.dart' as intl;
-// import 'package:provider/provider.dart';
-//
-//
-// class CartScreen extends StatefulWidget {
-//   static const routeName = '/cart_screen';
-//
-//   @override
-//   _CartScreenState createState() => _CartScreenState();
-// }
-//
-// class _CartScreenState extends State<CartScreen> {
-//   // List<ProductCart> shoppItems = [];
-//   // bool _isInit = true;
-//   //
-//   // var _isLoading = true;
-//   // Customer customer;
-//   // int totalPrice = 0;
-//   // int transportCost = 10000;
-//   //
-//   // int totalPricePure;
-//   //
-//   // void _showLogindialog() {
-//   //   showDialog(
-//   //     context: context,
-//   //     builder: (ctx) => CustomDialogEnter(
-//   //       title: 'ورود',
-//   //       buttonText: 'صفحه ورود ',
-//   //       description: 'برای ادامه باید وارد شوید',
-//   //     ),
-//   //   );
-//   // }
-//   //
-//   // void _showCompletedialog() {
-//   //   showDialog(
-//   //     context: context,
-//   //     builder: (ctx) => CustomDialogProfile(
-//   //       title: 'اطلاعات کاربری',
-//   //       buttonText: 'صفحه پروفایل ',
-//   //       description: 'برای ادامه باید اطلاعات کاربری تکمیل کنید',
-//   //     ),
-//   //   );
-//   // }
-//
-//   @override
-//   void didChangeDependencies() async {
-//     if (_isInit) {
-//       getShopItems();
-//       customer = Provider.of<CustomerInfo>(context, listen: false).customer;
-//       _isLoading = true;
-//
-// //      await getShopItems();
-//       bool isLogin = Provider.of<Auth>(context, listen: false).isAuth;
-//
-//       if (isLogin) {
-//         try {
-//           Provider.of<CustomerInfo>(context, listen: false).getCustomer().then(
-//             (_) {
-//               customer = Provider.of<CustomerInfo>(context, listen: false).customer;
-//             },
-//           );
-//         } catch (error) {
-//           print(error);
-//
-//           throw (error);
-//         }
-//       }
-//
-//       _isLoading = false;
-//       setState(() {});
-//     }
-//     _isInit = false;
-//
-//     super.didChangeDependencies();
-//   }
-//
-//   Future<void> getShopItems() async {
-//     setState(() {
-//       _isLoading = true;
-//     });
-//     shoppItems = Provider.of<Products>(context, listen: false).cartItems;
-//     totalPrice = 0;
-//     transportCost = 10000;
-//
-//     totalPricePure = 0;
-//     if (shoppItems.isNotEmpty) {
-//       for (int i = 0; i < shoppItems.length; i++) {
-//         shoppItems[i].price.isNotEmpty
-//             ? totalPrice = totalPrice +
-//                 int.parse(shoppItems[i].price) * shoppItems[i].productCount
-//             : totalPrice = totalPrice;
-//       }
-//     }
-//     totalPricePure = totalPrice + transportCost;
-//
-//     setState(() {
-//       _isLoading = false;
-//       print(_isLoading.toString());
-//     });
-//     print(_isLoading.toString());
-//   }
-//
-//   void setStateFun() {
-//     getShopItems();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     double deviceHeight = MediaQuery.of(context).size.height;
-//     double deviceWidth = MediaQuery.of(context).size.width;
-//     var textScaleFactor = MediaQuery.of(context).textScaleFactor;
-//     var currencyFormat = intl.NumberFormat.decimalPattern();
-//     bool isLogin = Provider.of<Auth>(context, listen: false).isAuth;
-//     getShopItems();
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         centerTitle: true,
-//         backgroundColor: AppTheme.appBarColor,
-//         iconTheme: new IconThemeData(color: AppTheme.appBarIconColor),
-//       ),
-//       body: Builder(builder: (context) {
-//         return Directionality(
-//           textDirection: TextDirection.rtl,
-//           child: Padding(
-//             padding: const EdgeInsets.all(15.0),
-//             child: Container(
-//               height: double.infinity,
-//               width: double.infinity,
-//               child: Stack(
-//                 children: <Widget>[
-//                   SingleChildScrollView(
-//                     child: Column(
-//                       children: <Widget>[
-//                         Container(
-//                           height: deviceHeight * 0.07,
-//                           decoration: BoxDecoration(
-//                               color: AppTheme.primary,
-//                               borderRadius: BorderRadius.circular(5),
-//                               border:
-//                                   Border.all(color: Colors.grey, width: 0.2)),
-//                           child: Padding(
-//                             padding: const EdgeInsets.all(8.0),
-//                             child: Row(
-//                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                               children: <Widget>[
-//                                 Icon(
-//                                   Icons.shopping_cart,
-//                                   color: AppTheme.bg,
-//                                 ),
-//                                 Text(
-//                                   'تعداد: ' ,
-//                                   style: TextStyle(
-//                                     color: AppTheme.bg,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 12,
-//                                   ),
-//                                 ),
-//                                 VerticalDivider(
-//                                   color: AppTheme.bg,
-//                                   thickness: 1,
-//                                   indent: 4,
-//                                   endIndent: 4,
-//                                 ),
-//                                 Text(
-//                                   'مبلغ قابل پرداخت (تومان)',
-//                                   style: TextStyle(
-//                                     color: AppTheme.bg,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 12,
-//                                   ),
-//                                 ),
-//                                 Text(
-//                                 '',
-//                                   style: TextStyle(
-//                                     color: AppTheme.bg,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 18,
-//                                   ),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ),
-//                         Padding(
-//                           padding: const EdgeInsets.only(top: 10.0),
-//                           child: shoppItems.length != 0
-//                               ? Container(
-//                                   child: ListView.builder(
-//                                     shrinkWrap: true,
-//                                     physics:
-//                                         const NeverScrollableScrollPhysics(),
-//                                     itemCount: shoppItems.length,
-//                                     itemBuilder: (ctx, i) => CardItem(
-//                                       shoppItem: shoppItems[i],
-//                                       callFunction: setStateFun,
-//                                     ),
-//                                   ),
-//                                 )
-//                               : Center(child: Text('محصولی اضافه نشده است')),
-//                         ),
-//                         Padding(
-//                           padding: const EdgeInsets.all(8.0),
-//                           child: Column(
-//                             children: <Widget>[
-//                               Row(
-//                                 mainAxisAlignment:
-//                                     MainAxisAlignment.spaceBetween,
-//                                 children: <Widget>[
-//                                   Padding(
-//                                     padding: const EdgeInsets.only(
-//                                         top: 8.0, bottom: 4),
-//                                     child: Text(
-//                                       'فاکتور فروش ',
-//                                       style: TextStyle(
-//                                         color: AppTheme.black,
-//                                         fontFamily: 'Iransans',
-//                                         fontSize: textScaleFactor * 16,
-//                                       ),
-//                                     ),
-//                                   ),
-//                                   Spacer(),
-//                                   Text(
-//                                     'مبلغ (تومان)',
-//                                     style: TextStyle(
-//                                       color: AppTheme.h1,
-//                                       fontFamily: 'Iransans',
-//                                       fontSize: textScaleFactor * 12,
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                               Container(
-//                                 decoration: BoxDecoration(
-//                                     color: Colors.white,
-//                                     borderRadius: BorderRadius.circular(5),
-//                                     border: Border.all(
-//                                         color: Colors.grey, width: 0.2)),
-//                                 child: Padding(
-//                                   padding: const EdgeInsets.all(4.0),
-//                                   child: Column(
-//                                     children: <Widget>[
-//                                       Padding(
-//                                         padding: const EdgeInsets.all(8.0),
-//                                         child: Row(
-//                                           mainAxisAlignment:
-//                                               MainAxisAlignment.spaceBetween,
-//                                           children: <Widget>[
-//                                             Text(
-//                                               'هزینه محصولات ',
-//                                               style: TextStyle(
-//                                                 color: AppTheme.h1,
-//                                                 fontFamily: 'Iransans',
-//                                                 fontSize: textScaleFactor * 14,
-//                                               ),
-//                                             ),
-//                                             Spacer(),
-//                                             Text(
-//                                               totalPrice.toString().isNotEmpty
-//                                                   ? EnArConvertor()
-//                                                       .replaceArNumber(
-//                                                           currencyFormat
-//                                                               .format(
-//                                                                   totalPrice)
-//                                                               .toString())
-//                                                   : EnArConvertor()
-//                                                       .replaceArNumber('0'),
-//                                               style: TextStyle(
-//                                                 color: AppTheme.h1,
-//                                                 fontFamily: 'Iransans',
-//                                                 fontSize: textScaleFactor * 18,
-//                                               ),
-//                                             ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                       Padding(
-//                                         padding: const EdgeInsets.all(8.0),
-//                                         child: Row(
-//                                           mainAxisAlignment:
-//                                               MainAxisAlignment.spaceBetween,
-//                                           children: <Widget>[
-//                                             Text(
-//                                               'حمل و نقل ',
-//                                               style: TextStyle(
-//                                                 color: AppTheme.h1,
-//                                                 fontFamily: 'Iransans',
-//                                                 fontSize: textScaleFactor * 14,
-//                                               ),
-//                                             ),
-//                                             Spacer(),
-//                                             Text(
-//                                               transportCost
-//                                                       .toString()
-//                                                       .isNotEmpty
-//                                                   ? EnArConvertor()
-//                                                       .replaceArNumber(
-//                                                           currencyFormat
-//                                                               .format(
-//                                                                   transportCost)
-//                                                               .toString())
-//                                                   : EnArConvertor()
-//                                                       .replaceArNumber('0'),
-//                                               style: TextStyle(
-//                                                 color: AppTheme.h1,
-//                                                 fontFamily: 'Iransans',
-//                                                 fontSize: textScaleFactor * 18,
-//                                               ),
-//                                             ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                       Padding(
-//                                         padding: const EdgeInsets.all(8.0),
-//                                         child: Row(
-//                                           mainAxisAlignment:
-//                                               MainAxisAlignment.spaceBetween,
-//                                           children: <Widget>[
-//                                             Text(
-//                                               'هزینه کل ',
-//                                               style: TextStyle(
-//                                                 color: AppTheme.h1,
-//                                                 fontFamily: 'Iransans',
-//                                                 fontWeight: FontWeight.bold,
-//                                                 fontSize: textScaleFactor * 14,
-//                                               ),
-//                                             ),
-//                                             Spacer(),
-//                                             Text(
-//                                               totalPricePure
-//                                                       .toString()
-//                                                       .isNotEmpty
-//                                                   ? EnArConvertor()
-//                                                       .replaceArNumber(
-//                                                           currencyFormat
-//                                                               .format(
-//                                                                   totalPricePure)
-//                                                               .toString())
-//                                                   : EnArConvertor()
-//                                                       .replaceArNumber('0'),
-//                                               style: TextStyle(
-//                                                 color: AppTheme.primary,
-//                                                 fontFamily: 'Iransans',
-//                                                 fontWeight: FontWeight.bold,
-//                                                 fontSize: textScaleFactor * 18,
-//                                               ),
-//                                             ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                     ],
-//                                   ),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           height: 50,
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                   Positioned(
-//                     bottom: 0,
-//                     left: 0,
-//                     right: 0,
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                       children: <Widget>[
-//                         Padding(
-//                           padding: const EdgeInsets.all(5.0),
-//                           child: InkWell(
-//                             onTap: () {
-//                               SnackBar addToCartSnackBar = SnackBar(
-//                                 content: Text(
-//                                   'سبد خرید خالی می باشد!',
-//                                   style: TextStyle(
-//                                     color: Colors.white,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 14.0,
-//                                   ),
-//                                 ),
-//                                 action: SnackBarAction(
-//                                   label: 'متوجه شدم',
-//                                   onPressed: () {
-//                                     // Some code to undo the change.
-//                                   },
-//                                 ),
-//                               );
-//                               if (shoppItems.isEmpty) {
-//                                 Scaffold.of(context)
-//                                     .showSnackBar(addToCartSnackBar);
-//                               } else if (!isLogin) {
-//                                 _showLogindialog();
-//                               } else {
-//                                 if (customer
-//                                     .personal_data.personal_data_complete) {
-//                                   Navigator.of(context)
-//                                       .pushNamed(CashPaymentScreen.routeName);
-//                                 } else {
-//                                   _showCompletedialog();
-//                                 }
-//                               }
-//                             },
-//                             child: Container(
-//                               width: deviceWidth * 0.4,
-//                               height: deviceWidth * 0.13,
-//                               decoration: BoxDecoration(
-//                                 boxShadow: [
-//                                   BoxShadow(
-//                                     color: Colors.grey,
-//                                     blurRadius: 0.0,
-//                                     // has the effect of softening the shadow
-//                                     spreadRadius: 0,
-//                                     // has the effect of extending the shadow
-//                                     offset: Offset(
-//                                       1.0, // horizontal, move right 10
-//                                       1.0, // vertical, move down 10
-//                                     ),
-//                                   )
-//                                 ],
-//                                 color: shoppItems.isEmpty
-//                                     ? AppTheme.grey
-//                                     : AppTheme.primary,
-//                                 borderRadius: BorderRadius.circular(5),
-//                               ),
-//                               child: Center(
-//                                 child: Text(
-//                                   'پرداخت نقدی',
-//                                   style: TextStyle(
-//                                     color: Colors.white,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 13.0,
-//                                   ),
-//                                   textAlign: TextAlign.center,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         Spacer(),
-//                         Padding(
-//                           padding: const EdgeInsets.all(5.0),
-//                           child: InkWell(
-//                             onTap: () {
-//                               SnackBar addToCartSnackBar = SnackBar(
-//                                 content: Text(
-//                                   'سبد خرید خالی میباشد!',
-//                                   style: TextStyle(
-//                                     color: Colors.white,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 14.0,
-//                                   ),
-//                                 ),
-//                                 action: SnackBarAction(
-//                                   label: 'متوجه شدم',
-//                                   onPressed: () {
-//                                     // Some code to undo the change.
-//                                   },
-//                                 ),
-//                               );
-//                               if (shoppItems.isEmpty) {
-//                                 Scaffold.of(context)
-//                                     .showSnackBar(addToCartSnackBar);
-//                               } else if (!isLogin) {
-//                                 _showLogindialog();
-//                               } else {
-//                                 if (customer
-//                                     .personal_data.personal_data_complete) {
-//                                   Navigator.of(context)
-//                                       .pushNamed(CreditPaymentScreen.routeName);
-//                                 } else {
-//                                   _showCompletedialog();
-//                                 }
-//                               }
-//                             },
-//                             child: Container(
-//                               width: deviceWidth * 0.4,
-//                               height: deviceWidth * 0.13,
-//                               decoration: BoxDecoration(
-//                                 boxShadow: [
-//                                   BoxShadow(
-//                                     color: Colors.grey,
-//                                     blurRadius: 0.0,
-//                                     // has the effect of softening the shadow
-//                                     spreadRadius: 0.0,
-//                                     // has the effect of extending the shadow
-//                                     offset: Offset(
-//                                       1.0, // horizontal, move right 10
-//                                       1.0, // vertical, move down 10
-//                                     ),
-//                                   )
-//                                 ],
-//                                 color: shoppItems.isEmpty
-//                                     ? AppTheme.grey
-//                                     : AppTheme.primary,
-//                                 borderRadius: BorderRadius.circular(5),
-//                               ),
-//                               child: Center(
-//                                 child: Text(
-//                                   'پرداخت اقساطی',
-//                                   style: TextStyle(
-//                                     color: Colors.white,
-//                                     fontFamily: 'Iransans',
-//                                     fontSize: textScaleFactor * 13.0,
-//                                   ),
-//                                   textAlign: TextAlign.center,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   Positioned(
-//                       top: 0,
-//                       bottom: 0,
-//                       left: 0,
-//                       right: 0,
-//                       child: Align(
-//                           alignment: Alignment.center,
-//                           child: _isLoading
-//                               ? SpinKitFadingCircle(
-//                                   itemBuilder:
-//                                       (BuildContext context, int index) {
-//                                     return DecoratedBox(
-//                                       decoration: BoxDecoration(
-//                                         shape: BoxShape.circle,
-//                                         color: index.isEven
-//                                             ? Colors.grey
-//                                             : Colors.grey,
-//                                       ),
-//                                     );
-//                                   },
-//                                 )
-//                               : Container()))
-//                 ],
-//               ),
-//             ),
-//           ),
-//         );
-//       }),
-//       endDrawer: Theme(
-//         data: Theme.of(context).copyWith(
-//           // Set the transparency here
-//           canvasColor: Colors
-//               .transparent, //or any other color you want. e.g Colors.blue.withOpacity(0.5)
-//         ),
-//         child: MainDrawer(),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
+import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
+import 'package:global_gym/provider/app_theme.dart';
+import 'package:global_gym/provider/user_plans.dart';
+import 'package:global_gym/widget/items/order_cart_item.dart';
+import 'package:global_gym/widget/items/progressWidget.dart';
+import 'package:global_gym/widget/items/snake_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+class CartScreen extends StatefulWidget {
+  final PanelController panelController;
+
+  CartScreen({@required this.panelController});
+
+  @override
+  _CartScreenState createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  var _isLoadingCart = false;
+
+  @override
+  void initState() {
+    Provider.of<UserPlans>(context, listen: false).getOrderCart();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final vm = Provider.of<UserPlans>(context);
+    return _buildCartContent(context, vm);
+  }
+
+  Widget _buildCartContent(context, UserPlans vm) {
+    double deviceHeight = getHeight(context);
+    double deviceWidth = getWidth(context);
+    double textScaleFactor = getTextScaleFactor(context);
+
+    if (vm.foodOrderInfo == null || _isLoadingCart)
+      return ProgressWidget();
+    else {
+      var foodOrderCart = vm.foodOrderInfo;
+      return Container(
+        padding: EdgeInsets.all(16.0),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 8.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cart',
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: 'CircularStd',
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: textScaleFactor * 24.0,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          widget.panelController.close();
+                        },
+                        padding: EdgeInsets.all(0),
+                        alignment: Alignment.centerRight,
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                        child: foodOrderCart.FoodOrderInfo != null
+                            ? foodOrderCart
+                            .FoodOrderInfo.FoodOrderDetails.length >
+                            0 ? ListView.builder(
+                                // controller: _scrollController,
+                                // scrollDirection: Axis.vertical,
+                                itemCount: foodOrderCart
+                                    .FoodOrderInfo.FoodOrderDetails.length,
+                                shrinkWrap: true,
+                                primary: false,
+                                padding: EdgeInsets.all(0),
+                                itemBuilder: (ctx, i) => Container(
+                                      width: deviceWidth,
+                                      height: 130,
+                                      child: OrderCartItem(
+                                        food: foodOrderCart
+                                            .FoodOrderInfo.FoodOrderDetails[i],
+                                        fcn: () {
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ))
+                            : _emptyWidget(context) : _emptyWidget(context) ,
+                      ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Total',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'CircularStd',
+                        fontWeight: FontWeight.w600,
+                        fontSize: textScaleFactor * 16.0,
+                      ),
+                    ),
+                    Spacer(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\$',
+                          textAlign: TextAlign.right,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w600,
+                            fontSize: textScaleFactor * 13.0,
+                          ),
+                        ),
+                        Text(
+                          '${foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.SubTotalAmount != null ? foodOrderCart.FoodOrderInfo.SubTotalAmount : 0}',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w600,
+                            fontSize: textScaleFactor * 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: InkWell(
+                    onTap:
+                    foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.FoodOrderDetails.length > 0
+                            ? () async {
+                                await finalizeOrderCart().then((value) async {
+                                    SnakeBar.show(context, message: value);
+                                });
+                              }
+                            : () {},
+                    child: Container(
+                      height: 48,
+                      width: 366,
+                      decoration: BoxDecoration(
+                          color: foodOrderCart.FoodOrderInfo != null && foodOrderCart
+                                      .FoodOrderInfo.FoodOrderDetails.length >
+                                  0
+                              ? Colors.black
+                              : Colors.grey,
+                          border: Border.all(color: Colors.black)),
+                      child: Center(
+                        child: Text(
+                          'Make Order',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w800,
+                            fontSize: textScaleFactor * 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget _emptyWidget(BuildContext context) {
+    double textScaleFactor = getTextScaleFactor(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Text(
+          'You Have No item in List',
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.right,
+          maxLines: 1,
+          style: TextStyle(
+            fontFamily: 'CircularStd',
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+            fontSize: textScaleFactor * 16.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<String> finalizeOrderCart() async {
+    _isLoadingCart = true;
+    setState(() {});
+
+    String isSent = await Provider.of<UserPlans>(context, listen: false)
+        .finalizeOrderCart()
+        .then((value) {
+      if (value == 'true') {
+        widget.panelController.close();
+        return 'Order is send successfully';
+      } else {
+        return value;
+      }
+    });
+
+    _isLoadingCart = false;
+    setState(() {});
+    return isSent;
+  }
+
+}

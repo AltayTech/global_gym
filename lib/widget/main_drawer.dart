@@ -60,10 +60,10 @@ class MainDrawer extends StatelessWidget {
     Color iconColor = AppTheme.grey;
 
     return Drawer(
-      child: Wrap(
+      child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.only(left:16, right: 16, top: 16),
             child: Container(
               height: 150,
               width: double.infinity,
@@ -108,266 +108,253 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
 
-          Directionality(
-            textDirection: TextDirection.rtl,
-            child: Container(
-              child: SingleChildScrollView(
-                child: Wrap(
-                  children: <Widget>[
-                    Container(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          'My Fitness',
-                          style: TextStyle(
-                            fontFamily: "Iransans",
-                            fontWeight: FontWeight.w500,
-                            fontSize: textScaleFactor * 14,
-                            color: Colors.grey,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        'My Exercise',
+          Expanded(
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: ListView(
+                padding: EdgeInsets.all(0),
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left:16, right: 16, bottom: 16),
+                      child: Text(
+                        'My Fitness',
                         style: TextStyle(
-                          fontFamily: "Iransans",
                           fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 16,
-                          color: textColor,
+                          fontSize: textScaleFactor * 14,
+                          color: Colors.grey,
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      trailing: Image.asset(
-                        'assets/icons/drawer_menu_exercise.png',
-                        height: 20,
-                        color: Colors.black45,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context)
-                            .pushNamed(MyExerciseScreen.routeName);
-                      },
                     ),
-                    ListTile(
-                      title: Text(
-                        'My Diet',
+                  ),
+                  ListTile(
+                    title: Text(
+                      'My Exercise',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 16,
+                        color: textColor,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    trailing: Image.asset(
+                      'assets/icons/drawer_menu_exercise.png',
+                      height: 20,
+                      color: Colors.black45,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context)
+                          .pushNamed(MyExerciseScreen.routeName);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'My Diet',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 16.0,
+                        color: textColor,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    trailing: Image.asset(
+                      'assets/icons/drawer_menu_diet.png',
+                      height: 20,
+                      color: Colors.black45,
+                    ),
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(MyDietScreen.routeName);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'My Measurement',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 16.0,
+                        color: textColor,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    trailing: Image.asset(
+                      'assets/icons/drawer_menu_measurement.png',
+                      height: 20,
+                      color: Colors.black45,
+                    ),
+                    onTap: () async {
+                      Navigator.of(context)
+                          .pushNamed(MyMeasurementScreen.routeName);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'My Appointment',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 16,
+                        color: textColor,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    trailing: Icon(
+                      Icons.date_range,
+                      color: iconColor,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        MyAppointmentScreen.routeName,
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Order Meal',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 15,
+                        color: textColor,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    trailing: Icon(
+                      Icons.fastfood,
+                      color: iconColor,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        OrderMealPreMade.routeName,
+                      );
+                    },
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        'Profile',
                         style: TextStyle(
-                          fontFamily: 'Iransans',
                           fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 16.0,
-                          color: textColor,
+                          fontSize: textScaleFactor * 14,
+                          color: Colors.grey,
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      trailing: Image.asset(
-                        'assets/icons/drawer_menu_diet.png',
-                        height: 20,
-                        color: Colors.black45,
-                      ),
-                      onTap: () async {
-                        Navigator.of(context).pop();
-
-                        Navigator.of(context).pushNamed(MyDietScreen.routeName);
-                      },
                     ),
-                    ListTile(
-                      title: Text(
-                        'My Measurement',
-                        style: TextStyle(
-                          fontFamily: 'Iransans',
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 16.0,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'My Profile',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 16,
+                        color: textColor,
                       ),
-                      trailing: Image.asset(
-                        'assets/icons/drawer_menu_measurement.png',
-                        height: 20,
-                        color: Colors.black45,
-                      ),
-                      onTap: () async {
-                        Navigator.of(context)
-                            .pushNamed(MyMeasurementScreen.routeName);
-                      },
+                      textAlign: TextAlign.left,
                     ),
-                    ListTile(
-                      title: Text(
-                        'My Appointment',
-                        style: TextStyle(
-                          fontFamily: "Iransans",
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 16,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      trailing: Icon(
-                        Icons.date_range,
-                        color: iconColor,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(
-                          MyAppointmentScreen.routeName,
-                        );
-                      },
+                    trailing: Image.asset(
+                      'assets/icons/drawer_menu_profile.png',
+                      height: 20,
+                      color: Colors.black45,
                     ),
-                    ListTile(
-                      title: Text(
-                        'Order Meal',
-                        style: TextStyle(
-                          fontFamily: "Iransans",
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 15,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        UserProfileScreen.routeName,
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Bills',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 16,
+                        color: textColor,
                       ),
-                      trailing: Icon(
-                        Icons.fastfood,
-                        color: iconColor,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(
-                          OrderMealPreMade.routeName,
-                        );
-                      },
+                      textAlign: TextAlign.left,
                     ),
-                    Container(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            fontFamily: "Iransans",
-                            fontWeight: FontWeight.w500,
-                            fontSize: textScaleFactor * 14,
-                            color: Colors.grey,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
+                    trailing: Image.asset(
+                      'assets/icons/drawer_menu_bill.png',
+                      height: 20,
+                      color: Colors.black45,
                     ),
-                    ListTile(
-                      title: Text(
-                        'My Profile',
-                        style: TextStyle(
-                          fontFamily: "Iransans",
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 16,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        BillsScreen.routeName,
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Order History',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 15,
+                        color: textColor,
                       ),
-                      trailing: Image.asset(
-                        'assets/icons/drawer_menu_profile.png',
-                        height: 20,
-                        color: Colors.black45,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(
-                          UserProfileScreen.routeName,
-                        );
-                      },
+                      textAlign: TextAlign.left,
                     ),
-                    ListTile(
-                      title: Text(
-                        'Bills',
-                        style: TextStyle(
-                          fontFamily: "Iransans",
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 16,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      trailing: Image.asset(
-                        'assets/icons/drawer_menu_bill.png',
-                        height: 20,
-                        color: Colors.black45,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(
-                          BillsScreen.routeName,
-                        );
-                      },
+                    trailing: Icon(
+                      Icons.timer,
+                      color: iconColor,
                     ),
-                    ListTile(
-                      title: Text(
-                        'Order History',
-                        style: TextStyle(
-                          fontFamily: "Iransans",
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 15,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        OrderHistoryScreen.routeName,
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Change Password',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 15,
+                        color: textColor,
                       ),
-                      trailing: Icon(
-                        Icons.timer,
-                        color: iconColor,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(
-                          OrderHistoryScreen.routeName,
-                        );
-                      },
+                      textAlign: TextAlign.left,
                     ),
-                    ListTile(
-                      title: Text(
-                        'Change Password',
-                        style: TextStyle(
-                          fontFamily: "Iransans",
-                          fontWeight: FontWeight.w500,
-                          fontSize: textScaleFactor * 15,
-                          color: textColor,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      trailing: Image.asset(
-                        'assets/icons/drawer_menu_change_pass.png',
-                        height: 20,
-                        color: Colors.black45,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushNamed(
-                          UserChangePasswordScreen.routeName,
-                        );
-                      },
+                    trailing: Image.asset(
+                      'assets/icons/drawer_menu_change_pass.png',
+                      height: 20,
+                      color: Colors.black45,
                     ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'Meal',
-                    //     style: TextStyle(
-                    //       fontFamily: 'Iransans',
-                    //       fontSize: textScaleFactor * 15.0,
-                    //       color: textColor,
-                    //     ),
-                    //     textAlign: TextAlign.left,
-                    //   ),
-                    //   trailing: Icon(
-                    //     Icons.power_settings_new,
-                    //     color: iconColor,
-                    //   ),
-                    //   onTap: () async {
-                    //     await Provider.of<Auth>(context, listen: false)
-                    //         .removeToken();
-                    //     Navigator.of(context).pushNamed('/');
-                    //   },
-                    // ),
-                  ],
-                ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed(
+                        UserChangePasswordScreen.routeName,
+                      );
+                    },
+                  ),
+                  // ListTile(
+                  //   title: Text(
+                  //     'Meal',
+                  //     style: TextStyle(
+                  //       fontFamily: 'Iransans',
+                  //       fontSize: textScaleFactor * 15.0,
+                  //       color: textColor,
+                  //     ),
+                  //     textAlign: TextAlign.left,
+                  //   ),
+                  //   trailing: Icon(
+                  //     Icons.power_settings_new,
+                  //     color: iconColor,
+                  //   ),
+                  //   onTap: () async {
+                  //     await Provider.of<Auth>(context, listen: false)
+                  //         .removeToken();
+                  //     Navigator.of(context).pushNamed('/');
+                  //   },
+                  // ),
+                ],
               ),
             ),
           ),

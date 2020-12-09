@@ -25,7 +25,7 @@ class Urls {
   static const decreaseFoodToCartEndPoint = '/v1/Orders/FoodOrders/DecreaseCartItem/';
 
   //remove food from cart
-  static const removeFoodToCartEndPoint = '/v1/Orders/FoodOrders/RemoveCartItem/';
+  static const removeFoodFromCartEndPoint = '/v1/Orders/FoodOrders/RemoveCartItem/';
 
   //finalize food cart
   static const finalizeFoodToCartEndPoint = '/v1/Orders/FoodOrders/Finalize/';

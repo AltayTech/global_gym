@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
           title: Strings.appTitle,
           theme: ThemeData(
               primaryColor: Colors.orange,
+              accentColor: Colors.orange[200],
               backgroundColor: AppTheme.bg,
               textTheme: AppTheme.textTheme,
               appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Colors.black))),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/provider/auth.dart';
 import 'package:global_gym/provider/user_info.dart';
 import 'package:global_gym/screen/user_profile/user_register_verification_code_screen.dart';
@@ -100,11 +101,10 @@ class _UserRegisterEmailScreenState extends State<UserRegisterEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-
-    double deviceHeight = MediaQuery.of(context).size.height;
-
-    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    double deviceHeight = getSafeAreaHeight(context);
+    double bodyHeight = getBodyHeight(context);
+    double deviceWidth = getWidth(context);
+    double textScaleFactor = getTextScaleFactor(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -120,15 +120,15 @@ class _UserRegisterEmailScreenState extends State<UserRegisterEmailScreen> {
         child: Builder(
           builder: (context) => Container(
             color: AppTheme.white,
-            height: deviceHeight * 0.9,
+            height: bodyHeight,
             child: Stack(
               children: <Widget>[
                 SingleChildScrollView(
                   child: Container(
-                    height: deviceHeight * 0.9,
+                    height: bodyHeight,
                     color: Colors.transparent,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 8, left: 24, right: 24),
+                      padding: const EdgeInsets.only(top: 0, left: 24, right: 24),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,77 +164,74 @@ class _UserRegisterEmailScreenState extends State<UserRegisterEmailScreen> {
                                   InfoEditItem(
                                     title: 'Email',
                                     controller: emailController,
-                                    keybordType: TextInputType.text,
+                                    keyboardType: TextInputType.text,
                                     validateMessage: 'Plaese Enter Email',
                                   ),
                                   InfoEditItem(
                                     title: 'Password',
                                     controller: passwordController,
-                                    keybordType: TextInputType.visiblePassword,
+                                    keyboardType: TextInputType.visiblePassword,
                                   ),
                                   InfoEditItem(
                                     title: 'Repeat Password',
                                     controller: rePasswordController,
-                                    keybordType: TextInputType.visiblePassword,
+                                    keyboardType: TextInputType.visiblePassword,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 32),
-                            child: InkWell(
-                              onTap: () async {
-                                FocusScope.of(context).requestFocus(new FocusNode());
+                          InkWell(
+                            onTap: () async {
+                              FocusScope.of(context).requestFocus(new FocusNode());
 
-                                if (_formKey.currentState.validate()) {
-                                  bool emailValid = RegExp(
-                                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      .hasMatch(emailController.text);
+                              if (_formKey.currentState.validate()) {
+                                bool emailValid = RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(emailController.text);
 
-                                  if (passwordController.text !=
-                                      rePasswordController.text) {
-                                    _snackBarMessage = 'Password does not match!';
-                                    showNotification(context, _snackBarMessage);
-                                  } else if (!emailValid) {
-                                    _snackBarMessage =
-                                        'Please Enter Email Correctly!';
-                                    showNotification(context, _snackBarMessage);
-                                  } else {
-                                    await submit().then((value) async {
-                                      if (value == 'true') {
-                                        print(value.toString());
-                                        Navigator.of(context).pushNamed(
-                                            UserRegisterVerificationCodeScreen
-                                                .routeName);
-                                      } else {
-                                        _snackBarMessage = value;
-                                        showNotification(
-                                            context, _snackBarMessage);
-                                      }
-                                    });
-                                  }
+                                if (passwordController.text !=
+                                    rePasswordController.text) {
+                                  _snackBarMessage = 'Password does not match!';
+                                  showNotification(context, _snackBarMessage);
+                                } else if (!emailValid) {
+                                  _snackBarMessage =
+                                      'Please Enter Email Correctly!';
+                                  showNotification(context, _snackBarMessage);
+                                } else {
+                                  await submit().then((value) async {
+                                    if (value == 'true') {
+                                      print(value.toString());
+                                      Navigator.of(context).pushNamed(
+                                          UserRegisterVerificationCodeScreen
+                                              .routeName);
+                                    } else {
+                                      _snackBarMessage = value;
+                                      showNotification(
+                                          context, _snackBarMessage);
+                                    }
+                                  });
                                 }
-                              },
-                              child: Container(
-                                height: 48,
-                                width: 366,
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    border: Border.all(color: Colors.black)),
-                                child: Center(
-                                  child: Text(
-                                    'Next',
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'CircularStd',
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: textScaleFactor * 16.0,
-                                    ),
+                              }
+                            },
+                            child: Container(
+                              height: 48,
+                              width: 366,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  border: Border.all(color: Colors.black)),
+                              child: Center(
+                                child: Text(
+                                  'Next',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'CircularStd',
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: textScaleFactor * 16.0,
                                   ),
                                 ),
                               ),

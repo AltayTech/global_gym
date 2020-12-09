@@ -167,7 +167,7 @@ class _UserForgetPasswordScreenState extends State<UserForgetPasswordScreen> {
                                 child: InfoEditItem(
                                   title: 'Email',
                                   controller: emailController,
-                                  keybordType: TextInputType.text,
+                                  keyboardType: TextInputType.text,
                                   validateMessage: 'Please Enter Email',
                                 ),
                               ),

@@ -171,7 +171,7 @@ class _UserRegisterVerificationCodeScreenState
                                 child: InfoEditItem(
                                   title: 'Verification Code',
                                   controller: codeController,
-                                  keybordType: TextInputType.text,
+                                  keyboardType: TextInputType.text,
                                   validateMessage:
                                       'Please Enter Verification Code',
                                 ),

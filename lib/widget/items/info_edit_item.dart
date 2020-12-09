@@ -1,26 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/provider/app_theme.dart';
 
 class InfoEditItem extends StatelessWidget {
+
   const InfoEditItem({
     Key key,
     @required this.title,
     @required this.controller,
-    @required this.keybordType,
+    @required this.keyboardType,
     this.validateMessage = 'Please Enter Correct value',
   }) : super(key: key);
 
   final String title;
   final TextEditingController controller;
-  final TextInputType keybordType;
+  final TextInputType keyboardType;
   final String validateMessage;
 
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
-    var textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    double deviceHeight = getHeight(context);
+    double deviceWidth = getWidth(context);
+    double textScaleFactor = getTextScaleFactor(context);
 
     return Container(
 //      width: deviceWidth * 0.8,
@@ -48,7 +50,7 @@ class InfoEditItem extends StatelessWidget {
               Container(
                 color: Colors.blue.withOpacity(0.05),
                 child: TextFormField(
-                  keyboardType: keybordType,
+                  keyboardType: keyboardType,
                   onEditingComplete: () {},
                   validator: (value) {
                     if (value.isEmpty) {
@@ -66,7 +68,6 @@ class InfoEditItem extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(0),
                       borderSide: BorderSide(width: 0,color: Colors.white),
-
                     ),
                     labelStyle: TextStyle(
                       color: Colors.blue,

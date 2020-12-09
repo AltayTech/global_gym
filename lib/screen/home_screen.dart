@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/models/Dashboard.dart';
 import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/user_info.dart';
@@ -105,9 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    double deviceHeight = getHeight(context);
+    double deviceWidth = getWidth(context);
+    double textScaleFactor = getTextScaleFactor(context);
 
     return Scaffold(
       appBar: AppBar(

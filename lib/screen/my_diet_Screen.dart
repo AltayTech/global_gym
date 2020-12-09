@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:global_gym/models/meal.dart';
 import 'package:global_gym/provider/app_theme.dart';
+import 'package:global_gym/provider/dimention.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/widget/items/meal_item.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +113,7 @@ class _MyDietScreenState extends State<MyDietScreen> {
             Positioned(
               top: 0,
               width: deviceWidth,
-              height: 250,
+              height: Dimention.topSpace,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -132,7 +133,7 @@ class _MyDietScreenState extends State<MyDietScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              top: 250,
+              top: Dimention.topSpace,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -152,63 +153,62 @@ class _MyDietScreenState extends State<MyDietScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: Container(
-                        width: double.infinity,
-                        child: _isLoading
-                            ? SpinKitFadingCircle(
-                                itemBuilder: (BuildContext context, int index) {
-                                  return DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: index.isEven ? AppTheme.spinerColor : AppTheme.spinerColor,
-                                    ),
-                                  );
-                                },
-                              )
-                            : Container(
-                          height: deviceHeight*0.6,
-                                child: listMeal.length > 0
-                                    ? ListView.builder(
-                                        // controller: _scrollController,
-                                        // scrollDirection: Axis.vertical,
-                                        itemCount: listMeal.length,
-                                        padding: EdgeInsets.all(0),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                      child: Container(
+                          width: double.infinity,
+                          child: _isLoading
+                              ? SpinKitFadingCircle(
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: index.isEven ? AppTheme.spinerColor : AppTheme.spinerColor,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : listMeal.length > 0
+                                  ? ListView.builder(
+                                      // controller: _scrollController,
+                                      // scrollDirection: Axis.vertical,
+                                      itemCount: listMeal.length,
+                                      padding: EdgeInsets.all(0),
 
-                                        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-                                          value: listMeal[i],
-                                          child: Container(
-                                            width: deviceWidth,
-                                            child: MealItem(
-                                              meal: listMeal[i],
-                                            ),
+                                      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                                        value: listMeal[i],
+                                        child: Container(
+                                          width: deviceWidth,
+                                          child: MealItem(
+                                            meal: listMeal[i],
                                           ),
                                         ),
-                                      )
-                                    : Center(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(bottom: 8.0),
-                                              child: Text(
-                                                'You Have No Diet List',
-                                                overflow: TextOverflow.ellipsis,
-                                                textAlign: TextAlign.right,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontFamily: 'CircularStd',
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: textScaleFactor * 16.0,
-                                                ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(bottom: 8.0),
+                                            child: Text(
+                                              'You Have No Diet List',
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.right,
+                                              maxLines: 1,
+                                              style: TextStyle(
+                                                fontFamily: 'CircularStd',
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: textScaleFactor * 16.0,
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                              )),
+                                    )),
+                    ),
                   ),
                 ],
               ),

@@ -165,7 +165,7 @@ class _ForgetVerificationCodeScreenState extends State<ForgetVerificationCodeScr
                                 child: InfoEditItem(
                                   title: 'Verification Code',
                                   controller: codeController,
-                                  keybordType: TextInputType.text,
+                                  keyboardType: TextInputType.text,
                                   validateMessage: 'Please Enter Verification Code',
                                 ),
                               ),

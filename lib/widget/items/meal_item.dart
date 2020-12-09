@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/models/meal.dart';
 import 'package:global_gym/screen/my_diet_detail_screen.dart';
 import 'package:intl/intl.dart' as intl;
@@ -14,13 +15,13 @@ class MealItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
-    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    var heightDevice = getHeight(context);
+    var widthDevice = getWidth(context);
+    var textScaleFactor = getTextScaleFactor(context);
     var currencyFormat = intl.NumberFormat.decimalPattern();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: LayoutBuilder(
         builder: (context, constraint) => InkWell(
           onTap: () {
@@ -34,18 +35,9 @@ class MealItem extends StatelessWidget {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color: AppTheme.bg,
-              boxShadow: [
-                BoxShadow(
-                  color: AppTheme.primary.withOpacity(1),
-                  blurRadius: 10.10,
-                  spreadRadius: 5.510,
-                  offset: Offset(
-                    0,
-                    0,
-                  ),
-                )
-              ],
+              shape: BoxShape.rectangle,
+              color: AppTheme.white,
+              border: Border.all(width: 0.3, color: AppTheme.grey),
               borderRadius: new BorderRadius.all(
                 Radius.circular(3),
               ),
@@ -53,30 +45,41 @@ class MealItem extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-
+                Center(
+                  child: Container(
+                    width: 3,
+                    color: isPast() ? Colors.grey : Colors.orange,
+                  ),
+                ),
                 Expanded(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          '${meal.MealName}',
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontFamily: 'Iransans',
-                            fontWeight: FontWeight.w500,
-                            fontSize: textScaleFactor * 14.0,
+                      Container(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Expanded(
+                          child: Text(
+                            '${meal.MealName}',
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: textScaleFactor * 14.0,
+                            ),
                           ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left:8,right:8),
-                        child: Icon(
-                          Icons.donut_large,
-                          size: 5,
-                        ),
+                        child: Container(
+                          height: 4,
+                          width: 4,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            shape: BoxShape.circle
+                          ),
+                        )
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 5, left: 0, top: 1, bottom: 4),
@@ -90,7 +93,6 @@ class MealItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(
-                            fontFamily: 'Iransans',
                             color: AppTheme.grey,
                             fontSize: textScaleFactor * 12.0,
                           ),
@@ -105,7 +107,7 @@ class MealItem extends StatelessWidget {
                     height: 30,
                     child: ListView.builder(
                       // controller: _scrollController,
-                      // scrollDirection: Axis.vertical,
+                      scrollDirection: Axis.horizontal,
                       itemCount: meal.Nuitritions.length,
                       padding: EdgeInsets.all(0),
 
@@ -123,4 +125,15 @@ class MealItem extends StatelessWidget {
       ),
     );
   }
+  bool isPast() {
+    if(meal.Time.contains(":")) {
+      List time = meal.Time.split(":");
+      DateTime mealtime = DateTime(0, 0, 0, int.parse(time[0]), int.parse(time[1]), 0, 0, 0);
+      DateTime now = DateTime(0, 0, 0, DateTime.now().hour, DateTime.now().minute, 0, 0, 0);
+      return mealtime.isBefore(now);
+    } else
+      return true;
+  }
 }
+
+
