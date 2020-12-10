@@ -381,9 +381,7 @@ class UserPlans with ChangeNotifier {
     var _hashId = prefs.getString('hashId');
     print(_hashId);
     if (_hashId != null && _hashId != '') {
-      final url = Urls.rootUrl +
-          Urls.getFoodToCartEndPoint +
-          '?HashFoodOrderId=$_hashId';
+      final url = Urls.rootUrl + Urls.getFoodToCartEndPoint + '?HashFoodOrderId=$_hashId';
 
       try {
         final response = await http.get(
@@ -594,8 +592,7 @@ class UserPlans with ChangeNotifier {
       print(responseData);
 
       try {
-        MainMeasurementDetail mainMeasurementDetail =
-            MainMeasurementDetail.fromMap(responseData);
+        MainMeasurementDetail mainMeasurementDetail = MainMeasurementDetail.fromMap(responseData);
         print('oookkkkkkkkkkkk');
 
         if (mainMeasurementDetail.IsSuccess) {
@@ -633,8 +630,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    final url =
-        Urls.rootUrl + Urls.getReserveListEndPoint + '?FilteredDate=$date';
+    final url = Urls.rootUrl + Urls.getReserveListEndPoint + '?FilteredDate=$date';
 
     print(url);
 
@@ -750,8 +746,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    final url =
-        Urls.rootUrl + Urls.getFoodOrderHistoryEndPoint + '/?OrderStatusType=1';
+    final url = Urls.rootUrl + Urls.getFoodOrderHistoryEndPoint + '/?OrderStatusType=1';
 
     print(url);
 

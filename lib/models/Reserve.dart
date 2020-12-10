@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Reserve {
+class Reserve extends ChangeNotifier {
   final int Id;
   final int UserId;
   final String UserFullName;
@@ -10,7 +10,7 @@ class Reserve {
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
-  const Reserve({
+   Reserve({
     @required this.Id,
     @required this.UserId,
     @required this.UserFullName,
@@ -65,12 +65,7 @@ class Reserve {
 
   @override
   int get hashCode =>
-      Id.hashCode ^
-      UserId.hashCode ^
-      UserFullName.hashCode ^
-      FromTime.hashCode ^
-      ToTime.hashCode ^
-      Date.hashCode;
+      Id.hashCode ^ UserId.hashCode ^ UserFullName.hashCode ^ FromTime.hashCode ^ ToTime.hashCode ^ Date.hashCode;
 
   factory Reserve.fromMap(Map<String, dynamic> map) {
     return new Reserve(

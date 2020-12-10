@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:global_gym/models/Reserve.dart';
 import 'package:global_gym/provider/user_plans.dart';
+import 'package:global_gym/widget/items/appoinment_item.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -28,6 +29,7 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
   Map<DateTime, List> events;
 
   List _selectedEvents = [];
+  List _selectedEventsList = [];
 
   @override
   void didChangeDependencies() async {
@@ -221,6 +223,7 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                     onDaySelected: (day, events, holidays) {
                       setState(() {
                         _selectedEvents = events;
+
                       });
                     },
                     calendarStyle: CalendarStyle(
@@ -229,6 +232,44 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                       selectedColor: Colors.amberAccent,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                    child: Text(
+                      'Training List',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontFamily: 'CircularStd',
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w500,
+                        fontSize: textScaleFactor * 14.0,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 300,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ListView.builder(
+                        // controller: _scrollController,
+                        // scrollDirection: Axis.vertical,
+                        itemCount: reserveList.length,
+                        padding: EdgeInsets.all(0),
+
+                        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                          value: reserveList[i],
+                          child: Container(
+                            width: deviceWidth,
+                            child: AppointmentItem(
+                              reserve: reserveList[i],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+
                 ],
               ),
             ),
