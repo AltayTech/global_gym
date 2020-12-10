@@ -6,7 +6,6 @@ import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/widget/items/billScreenItem.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 class BillsScreen extends StatelessWidget {
   static const routeName = '/BillsScreen';

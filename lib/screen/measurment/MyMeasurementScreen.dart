@@ -160,68 +160,70 @@ class _MyMeasurementScreenState extends State<MyMeasurementScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: Container(
-                      width: double.infinity,
-                      child: _isLoading
-                          ? SpinKitFadingCircle(
-                              itemBuilder: (BuildContext context, int index) {
-                                return DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: index.isEven
-                                        ? AppTheme.spinerColor
-                                        : AppTheme.spinerColor,
-                                  ),
-                                );
-                              },
-                            )
-                          : Container(
-                              height: deviceHeight * 0.67,
-                              child: measurementList.length > 0
-                                  ? ListView.builder(
-                                      // controller: _scrollController,
-                                      // scrollDirection: Axis.vertical,
-                                      itemCount: measurementList.length,
-                                      padding: EdgeInsets.all(0),
-                                      itemBuilder: (ctx, i) =>
-                                          ChangeNotifierProvider.value(
-                                        value: measurementList[i],
-                                        child: Container(
-                                          width: deviceWidth,
-                                          child: MeasurementItem(
-                                            measurement: measurementList[i],
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Text(
-                                              'You Have No Diet List',
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.right,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                fontFamily: 'CircularStd',
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize:
-                                                    textScaleFactor * 16.0,
-                                              ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: Container(
+                        width: double.infinity,
+                        child: _isLoading
+                            ? SpinKitFadingCircle(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: index.isEven
+                                          ? AppTheme.spinerColor
+                                          : AppTheme.spinerColor,
+                                    ),
+                                  );
+                                },
+                              )
+                            : Container(
+                                height: deviceHeight * 0.67,
+                                child: measurementList.length > 0
+                                    ? ListView.builder(
+                                        // controller: _scrollController,
+                                        // scrollDirection: Axis.vertical,
+                                        itemCount: measurementList.length,
+                                        padding: EdgeInsets.all(0),
+                                        itemBuilder: (ctx, i) =>
+                                            ChangeNotifierProvider.value(
+                                          value: measurementList[i],
+                                          child: Container(
+                                            width: deviceWidth,
+                                            child: MeasurementItem(
+                                              measurement: measurementList[i],
                                             ),
                                           ),
-                                        ],
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8.0),
+                                              child: Text(
+                                                'You Have No Diet List',
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.right,
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  fontFamily: 'CircularStd',
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize:
+                                                      textScaleFactor * 16.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                            ),
+                              ),
+                      ),
                     ),
                   ),
                 ],

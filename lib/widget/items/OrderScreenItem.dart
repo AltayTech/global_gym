@@ -64,11 +64,11 @@ class OrderScreenItem extends StatelessWidget {
       ),
     );
   }
+}
 
-  String formatDate(String date) {
-    var d = date.split(' ');
-    return "${d[1]} ${d[2]} ${d[3]}";
-  }
+String formatDate(String date) {
+  var d = date.split(' ');
+  return "${d[1]} ${d[2]} ${d[3]}";
 }
 
 class StringDataRow extends StatelessWidget {
