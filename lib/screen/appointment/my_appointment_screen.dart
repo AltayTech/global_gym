@@ -175,6 +175,10 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TableCalendar(
+                    // initialCalendarFormat: CalendarFormat.month,
+                    // availableCalendarFormats: {
+                    //   CalendarFormat.month: 'Month',
+                    // },
                     calendarController: _calendarController,
                     events: events,
                     builders: CalendarBuilders(
@@ -247,22 +251,24 @@ class _MyAppointmentScreenState extends State<MyAppointmentScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ListView.builder(
-                        // controller: _scrollController,
-                        // scrollDirection: Axis.vertical,
-                        itemCount: reserveList.length,
-                        padding: EdgeInsets.all(0),
+                  Expanded(
+                    child: Container(
+                      height: 300,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ListView.builder(
+                          // controller: _scrollController,
+                          // scrollDirection: Axis.vertical,
+                          itemCount: reserveList.length,
+                          padding: EdgeInsets.all(0),
 
-                        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-                          value: reserveList[i],
-                          child: Container(
-                            width: deviceWidth,
-                            child: AppointmentItem(
-                              reserve: reserveList[i],
+                          itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                            value: reserveList[i],
+                            child: Container(
+                              width: deviceWidth,
+                              child: AppointmentItem(
+                                reserve: reserveList[i],
+                              ),
                             ),
                           ),
                         ),

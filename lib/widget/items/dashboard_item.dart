@@ -10,7 +10,7 @@ class DashBoardItem extends StatefulWidget {
     @required this.title,
     @required this.header,
     @required this.name,
-    @required this.icon,
+    @required this.iconImage,
     @required this.image,
     @required this.fcn,
   }) : super(key: key);
@@ -18,7 +18,7 @@ class DashBoardItem extends StatefulWidget {
   final String title;
   final String header;
   final String name;
-  final Icon icon;
+  final Image iconImage;
   final Image image;
   final Function fcn;
 
@@ -97,7 +97,7 @@ class _DashBoardItemState extends State<DashBoardItem> {
                     left: 20,
                     child: Row(
                       children: [
-                        widget.icon,
+                        widget.iconImage,
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Column(

@@ -57,7 +57,7 @@ class BillScreenItem extends StatelessWidget {
                   Expanded(
                     child: DataRow(
                       title: "Total Cost",
-                      amount: bill.Price.toString(),
+                      amount: "\$${bill.Price.toString()}",
                       dimension: '',
                     ),
                   ),
@@ -133,6 +133,8 @@ class DataRow extends StatelessWidget {
                 fontFamily: 'CircularStd',
                 color: AppTheme.black,
                 fontSize: textScaleFactor * 14.0,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold
               ),
             ),
           ),

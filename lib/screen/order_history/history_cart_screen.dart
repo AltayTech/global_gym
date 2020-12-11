@@ -5,22 +5,22 @@ import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
 import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/user_plans.dart';
+import 'package:global_gym/widget/items/history_order_cart_item.dart';
 import 'package:global_gym/widget/items/order_cart_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:global_gym/widget/items/snake_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CartScreen extends StatefulWidget {
+class HistoryCartScreen extends StatefulWidget {
   final PanelController panelController;
-
-  CartScreen({@required this.panelController});
+  HistoryCartScreen({@required this.panelController});
 
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _HistoryCartScreenState createState() => _HistoryCartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _HistoryCartScreenState extends State<HistoryCartScreen> {
   var _isLoadingCart = false;
 
   @override
@@ -40,10 +40,10 @@ class _CartScreenState extends State<CartScreen> {
     double deviceWidth = getWidth(context);
     double textScaleFactor = getTextScaleFactor(context);
 
-    if (vm.foodOrderInfo == null || _isLoadingCart)
+    if (vm.historyOrderDetails == null || _isLoadingCart)
       return ProgressWidget();
     else {
-      var foodOrderCart = vm.foodOrderInfo;
+      var foodOrderCart = vm.historyOrderDetails;
       return Container(
         padding: EdgeInsets.all(16.0),
         child: Stack(
@@ -60,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Cart',
+                        'Order History',
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.right,
                         maxLines: 1,
@@ -83,83 +83,32 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ),
                 Expanded(
-                        child: foodOrderCart.FoodOrderInfo != null
+                        child: foodOrderCart != null
                             ? foodOrderCart
-                            .FoodOrderInfo.FoodOrderDetails.length >
+                            .FoodOrderDetails.length >
                             0 ? ListView.builder(
                                 // controller: _scrollController,
                                 // scrollDirection: Axis.vertical,
-                                itemCount: foodOrderCart
-                                    .FoodOrderInfo.FoodOrderDetails.length,
+                                itemCount: foodOrderCart.FoodOrderDetails.length,
                                 shrinkWrap: true,
                                 primary: false,
                                 padding: EdgeInsets.all(0),
                                 itemBuilder: (ctx, i) => Container(
                                       width: deviceWidth,
                                       height: 130,
-                                      child: OrderCartItem(
+                                      child: HistoryOrderCartItem(
                                         food: foodOrderCart
-                                            .FoodOrderInfo.FoodOrderDetails[i],
-                                        fcn: () {
-                                          setState(() {});
-                                        },
+                                            .FoodOrderDetails[i],
+                                          canEdit: true//foodOrderCart.statustype,
                                       ),
                                     ))
                             : _emptyWidget(context) : _emptyWidget(context) ,
                       ),
-                Divider(
-                  color: Colors.grey,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Total',
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontFamily: 'CircularStd',
-                        fontWeight: FontWeight.w600,
-                        fontSize: textScaleFactor * 16.0,
-                      ),
-                    ),
-                    Spacer(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '\$',
-                          textAlign: TextAlign.right,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'CircularStd',
-                            fontWeight: FontWeight.w600,
-                            fontSize: textScaleFactor * 13.0,
-                          ),
-                        ),
-                        Text(
-                          '${foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.SubTotalAmount != null ? foodOrderCart.FoodOrderInfo.SubTotalAmount : 0}',
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.left,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'CircularStd',
-                            fontWeight: FontWeight.w600,
-                            fontSize: textScaleFactor * 18.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Padding(
+                true ? Padding(
                   padding: const EdgeInsets.only(top: 16),
                   child: InkWell(
                     onTap:
-                    foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.FoodOrderDetails.length > 0
+                    foodOrderCart != null && foodOrderCart.FoodOrderDetails.length > 0
                             ? () async {
                                 await finalizeOrderCart().then((value) async {
                                     SnakeBar.show(context, message: value);
@@ -170,15 +119,15 @@ class _CartScreenState extends State<CartScreen> {
                       height: 48,
                       width: 366,
                       decoration: BoxDecoration(
-                          color: foodOrderCart.FoodOrderInfo != null && foodOrderCart
-                                      .FoodOrderInfo.FoodOrderDetails.length >
+                          color: foodOrderCart != null && foodOrderCart
+                                      .FoodOrderDetails.length >
                                   0
                               ? Colors.black
                               : Colors.grey,
                           border: Border.all(color: Colors.black)),
                       child: Center(
                         child: Text(
-                          'Make Order',
+                          'Save Change',
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           maxLines: 1,
@@ -192,7 +141,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                     ),
                   ),
-                ),
+                ) : Container(),
               ],
             ),
           ],

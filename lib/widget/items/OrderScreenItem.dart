@@ -7,8 +7,9 @@ import 'package:intl/intl.dart' as intl;
 
 class OrderScreenItem extends StatelessWidget {
   final Order order;
+  final Function onPressed;
 
-  OrderScreenItem({this.order});
+  OrderScreenItem({this.order, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -17,61 +18,61 @@ class OrderScreenItem extends StatelessWidget {
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var currencyFormat = intl.NumberFormat.decimalPattern();
 
-    return LayoutBuilder(
-      builder: (ctx, constraints) {
-        return Padding(
-          padding: const EdgeInsets.only(top:8.0
+    return InkWell(
+      onTap: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom:8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: AppTheme.white,
+            border: Border.all(width: 0.3, color: AppTheme.grey),
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: AppTheme.white,
-              border: Border.all(width: 0.3, color: AppTheme.grey),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Container(
-                height: constraints.maxHeight,
-                width: constraints.maxWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: StringDataRow(
+                      title: "Status",
+                      amount: order.OrderStatusTypeName.toString(),
+                      dimension: '',
+                    ),
+                  ),
+                  Expanded(
+                    child: StringDataRow(
+                      title: "Total Cost",
+                      amount: order.TotalFee.toString(),
+                      dimension: '',
+                    ),
+                  ),
+                  Expanded(
+                    child: StringDataRow(
+                      title: "Payment Type",
+                      amount: formatDate(order.FinalizedDateTime),
+                      dimension: '',
+                    ),
+                  ),
 
-                    Expanded(
-                      child: DataRow(
-                        title: "Status",
-                        amount: order.OrderStatusTypeName.toString(),
-                        dimension: '',
-                      ),
-                    ),
-                    Expanded(
-                      child: DataRow(
-                        title: "Total Cost",
-                        amount: order.TotalFee.toString(),
-                        dimension: '',
-                      ),
-                    ),
-                    Expanded(
-                      child: DataRow(
-                        title: "Payment Type",
-                        amount: order.FinalizedDateTime.toString(),
-                        dimension: '',
-                      ),
-                    ),
-
-                  ],
-                ),
+                ],
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
 
-class DataRow extends StatelessWidget {
-  const DataRow({
+String formatDate(String date) {
+  var d = date.split(' ');
+  return "${d[1]} ${d[2]} ${d[3]}";
+}
+
+class StringDataRow extends StatelessWidget {
+  const StringDataRow({
     Key key,
     @required this.title,
     @required this.amount,

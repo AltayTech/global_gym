@@ -12,6 +12,7 @@ import 'package:global_gym/widget/main_drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+
 import 'my_diet_Screen.dart';
 import 'my_exercise_screen.dart';
 
@@ -106,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     double deviceHeight = getHeight(context);
     double deviceWidth = getWidth(context);
     double textScaleFactor = getTextScaleFactor(context);
@@ -207,8 +209,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           header: DateFormat.EEEE().format(DateTime.now()),
                           name: dashboardInfo.UserTraningPrograms.firstWhere(
                               (element) => element.WeekDayId == DateTime.now().weekday).ExerciseGroupName,
-                          icon: Icon(
-                            Icons.watch,
+                          iconImage: Image.asset(
+                            'assets/icons/measurement_workout.png',
+                            height: 30,
+                            width: 30,
                             color: Colors.amber,
                           ),
                           image: Image.asset(
@@ -230,8 +234,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: 'Upcoming Meal',
                           header: DateFormat.Hm().format(DateTime.now()),
                           name:  dashboardInfo.UserDiets[DateTime.now().weekday].Time,
-                          icon: Icon(
-                            Icons.watch,
+                          iconImage: Image.asset(
+                            'assets/icons/drawer_menu_diet.png',
+                            height: 30,
+                            width: 30,
                             color: Colors.amber,
                           ),
                           image: Image.asset(
@@ -253,8 +259,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: 'Upcoming Events',
                           header: DateFormat.MMMd().format(DateTime.now()),
                           name: 'Mon 18:00 - 20:00',
-                          icon: Icon(
-                            Icons.watch,
+                          iconImage: Image.asset(
+                            'assets/icons/measurement_weight.png',
+                            height: 30,
+                            width: 30,
                             color: Colors.amber,
                           ),
                           image: Image.asset(
