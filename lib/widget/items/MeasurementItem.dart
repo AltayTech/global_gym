@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:global_gym/models/measurment/Measurement.dart';
 import 'package:global_gym/screen/measurment/MyMeasurementDetailScreen.dart';
+import 'package:global_gym/widget/items/OrderScreenItem.dart';
 import 'package:intl/intl.dart' as intl;
 
 class MeasurementItem extends StatelessWidget {
@@ -44,7 +45,7 @@ class MeasurementItem extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
                   child: Text(
-                    measurement.LongDate.toString(),
+                    formatDate(measurement.LongDate),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.left,
                     maxLines: 1,

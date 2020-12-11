@@ -44,6 +44,9 @@ class Urls {
 
   //get order history
   static const getFoodOrderHistoryEndPoint = '/v1/Orders/FinalizedFoodOrders/Read';
+  static const getFoodOrderHistoryDetailsEndPoint = '/v1/Orders/FinalizedFoodOrders/Find';
+
+
 
   //get bills
   static const getFPaymentsEndPoint = '/v1/Financials/Payments/Read';

@@ -4,6 +4,7 @@ class Order {
   final int Id;
   final String FinalizedDateTime;
   final String OrderStatusTypeName;
+  final int OrderStatusType;
   final String UserFullName;
   final double TotalFee;
 
@@ -13,6 +14,7 @@ class Order {
     @required this.Id,
     @required this.FinalizedDateTime,
     @required this.OrderStatusTypeName,
+    @required this.OrderStatusType,
     @required this.UserFullName,
     @required this.TotalFee,
   });
@@ -21,10 +23,11 @@ class Order {
     int Id,
     String FinalizedDateTime,
     String OrderStatusTypeName,
+    int OrderStatusType,
     String UserFullName,
     double TotalFee,
   }) {
-    if ((Id == null || identical(Id, this.Id)) &&
+    if ((Id == null || identical(Id, this.Id)) &&(OrderStatusType == null || identical(OrderStatusType, this.OrderStatusType)) &&
         (FinalizedDateTime == null ||
             identical(FinalizedDateTime, this.FinalizedDateTime)) &&
         (OrderStatusTypeName == null ||
@@ -38,6 +41,7 @@ class Order {
       Id: Id ?? this.Id,
       FinalizedDateTime: FinalizedDateTime ?? this.FinalizedDateTime,
       OrderStatusTypeName: OrderStatusTypeName ?? this.OrderStatusTypeName,
+      OrderStatusType: OrderStatusType ?? this.OrderStatusType,
       UserFullName: UserFullName ?? this.UserFullName,
       TotalFee: TotalFee ?? this.TotalFee,
     );
@@ -45,7 +49,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order{Id: $Id, FinalizedDateTime: $FinalizedDateTime, OrderStatusTypeName: $OrderStatusTypeName, UserFullName: $UserFullName, TotalFee: $TotalFee}';
+    return 'Order{Id: $Id, FinalizedDateTime: $FinalizedDateTime,OrderStatusType: $OrderStatusType, OrderStatusTypeName: $OrderStatusTypeName, UserFullName: $UserFullName, TotalFee: $TotalFee}';
   }
 
   @override
@@ -56,6 +60,7 @@ class Order {
           Id == other.Id &&
           FinalizedDateTime == other.FinalizedDateTime &&
           OrderStatusTypeName == other.OrderStatusTypeName &&
+          OrderStatusType == other.OrderStatusType &&
           UserFullName == other.UserFullName &&
           TotalFee == other.TotalFee);
 
@@ -64,6 +69,7 @@ class Order {
       Id.hashCode ^
       FinalizedDateTime.hashCode ^
       OrderStatusTypeName.hashCode ^
+      OrderStatusType.hashCode ^
       UserFullName.hashCode ^
       TotalFee.hashCode;
 
@@ -72,6 +78,7 @@ class Order {
       Id: map['Id'],
       FinalizedDateTime: map['FinalizedDateTime']!=null?map['FinalizedDateTime']:'',
       OrderStatusTypeName: map['OrderStatusTypeName']!=null?map['OrderStatusTypeName']:'',
+      OrderStatusType: map['OrderStatusType']!=null?map['OrderStatusType']:'',
       UserFullName: map['UserFullName']!=null?map['UserFullName']:'',
       TotalFee: map['TotalFee'],
     );
@@ -82,6 +89,7 @@ class Order {
       'Id': this.Id,
       'FinalizedDateTime': this.FinalizedDateTime,
       'OrderStatusTypeName': this.OrderStatusTypeName,
+      'OrderStatusType': this.OrderStatusType,
       'UserFullName': this.UserFullName,
       'TotalFee': this.TotalFee,
     };
