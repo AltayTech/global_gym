@@ -5,14 +5,14 @@ import 'package:global_gym/screen/user_profile/user_register_survey_complete_scr
 import 'package:global_gym/screen/user_profile/user_register_survey_wrong_screen.dart';
 import 'package:provider/provider.dart';
 
-class SurveyScreen extends StatefulWidget {
-  static const routeName = '/SurveyScreen';
+class OrderMealSelfMade extends StatefulWidget {
+  static const routeName = '/OrderMealSelfMade';
 
   @override
-  _SurveyScreenState createState() => _SurveyScreenState();
+  _OrderMealSelfMadeState createState() => _OrderMealSelfMadeState();
 }
 
-class _SurveyScreenState extends State<SurveyScreen> {
+class _OrderMealSelfMadeState extends State<OrderMealSelfMade> {
   int itemIndex = 0;
 
   bool isInit = true;

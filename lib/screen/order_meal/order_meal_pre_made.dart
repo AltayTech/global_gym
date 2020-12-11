@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/models/orderMeal/Food.dart';
-import 'package:global_gym/models/orderMeal/FoodCart.dart';
-import 'package:global_gym/models/orderMeal/FoodGroup.dart';
-import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
-import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/dimention.dart';
-import 'package:global_gym/provider/strings.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/screen/order_meal/cart_screen.dart';
-import 'package:global_gym/widget/items/order_cart_item.dart';
 import 'package:global_gym/widget/items/order_meal_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +40,6 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     final vm = Provider.of<UserPlans>(context);
-
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -94,8 +86,7 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 8.0, left: 16, right: 16),
+                      padding: const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
                       child: Text(
                         'Order Meal',
                         overflow: TextOverflow.ellipsis,
@@ -111,8 +102,7 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                     ),
                     Expanded(
                       child: Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16),
-                          child: buildContent(context, vm)),
+                          padding: const EdgeInsets.only(left: 16, right: 16), child: buildContent(context, vm)),
                     ),
                   ],
                 ),
