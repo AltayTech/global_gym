@@ -15,6 +15,8 @@ import 'package:global_gym/screen/my_exercise_detail_screen.dart';
 import 'package:global_gym/screen/my_exercise_screen.dart';
 import 'package:global_gym/screen/order_history/OrderHistoryScreen.dart';
 import 'package:global_gym/screen/order_meal/order_meal_pre_made.dart';
+import 'package:global_gym/screen/order_meal/order_meal_self_made_list.dart';
+import 'package:global_gym/screen/order_meal/order_meal_selfe_made.dart';
 import 'package:global_gym/screen/splash_Screen.dart';
 import 'package:global_gym/screen/survey_screen.dart';
 import 'package:global_gym/screen/user_profile/change_pass_verification_code_screen.dart';
@@ -101,6 +103,8 @@ class _MyAppState extends State<MyApp> {
             UserChangePasswordScreen.routeName: (ctx) => UserChangePasswordScreen(),
             ChangePassVerificationCodeScreen.routeName: (ctx) => ChangePassVerificationCodeScreen(),
             UserProfileScreen.routeName: (ctx) => UserProfileScreen(),
+            OrderMealSelfMade.routeName: (ctx) => OrderMealSelfMade(),
+            OrderMealSelfMadeList.routeName: (ctx) => OrderMealSelfMadeList(),
           },
         ));
   }

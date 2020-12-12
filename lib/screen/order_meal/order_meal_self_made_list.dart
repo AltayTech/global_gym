@@ -4,21 +4,22 @@ import 'package:global_gym/models/orderMeal/Food.dart';
 import 'package:global_gym/provider/dimention.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/screen/order_meal/cart_screen.dart';
+import 'package:global_gym/screen/order_meal/cart_screen_self_made.dart';
+import 'package:global_gym/screen/order_meal/order_meal_pre_made.dart';
 import 'package:global_gym/screen/order_meal/order_meal_selfe_made.dart';
-import 'package:global_gym/screen/user_profile/user_profile_screen.dart';
 import 'package:global_gym/widget/items/order_meal_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class OrderMealPreMade extends StatefulWidget {
-  static const routeName = '/OrderMealPreMade';
+class OrderMealSelfMadeList extends StatefulWidget {
+  static const routeName = '/OrderMealSelfMadeList';
 
   @override
-  _OrderMealPreMadeState createState() => _OrderMealPreMadeState();
+  _OrderMealSelfMadeListState createState() => _OrderMealSelfMadeListState();
 }
 
-class _OrderMealPreMadeState extends State<OrderMealPreMade> {
+class _OrderMealSelfMadeListState extends State<OrderMealSelfMadeList> {
   bool _isInit = true;
 
   var _isLoading = false;
@@ -52,7 +53,7 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
           actions: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.only(right: 24),
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pushNamed(
@@ -60,14 +61,33 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                     );
                   },
                   child: Image.asset(
-                    'assets/icons/self_made.png',
+                    'assets/icons/self_made_refresh.png',
                     fit: BoxFit.cover,
-                    height: 35,
-                    width: 35,
+                    height: 25,
+                    width: 25,
                   ),
                 ),
               ),
             ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 24),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      OrderMealPreMade.routeName,
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/icons/pre_made.png',
+                    fit: BoxFit.cover,
+                    height: 25,
+                    width: 25,
+                  ),
+                ),
+              ),
+            ),
+
           ],
         ),
         body: Container(
@@ -110,6 +130,21 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
                       child: Text(
+                        'Self Made',
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: 'CircularStd',
+                          color: Colors.amber,
+                          fontWeight: FontWeight.w500,
+                          fontSize: textScaleFactor * 18.0,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
+                      child: Text(
                         'Order Meal',
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.right,
@@ -146,7 +181,7 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
                   controller: panelController,
                   maxHeight: getPercentsOfHeight(context, 70),
                   minHeight: 0,
-                  panel: CartScreen(
+                  panel: CartScreenSelfMade(
                     panelController: panelController,
                   ))
             ],

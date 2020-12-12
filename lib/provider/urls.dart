@@ -59,6 +59,12 @@ class Urls {
   //get User info
   static const getProfileEndPoint = '/v1/Identities/CustomerUsers/FindProfile';
 
+  //get bills
+  static const getSelfMadeFoodGroupEndPoint = '/v1/FoodProducts/SelfMadeMenuGroups/Read';
+
+
+
+
   static const userEndPoint = '/api/user';
   static const versionCode = '4';
   static const requestHeader = {
