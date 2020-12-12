@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:global_gym/models/Dashboard.dart';
 import 'package:global_gym/models/MainDashboard.dart';
 import 'package:global_gym/models/survey_question.dart';
@@ -183,9 +186,8 @@ class UserInfo with ChangeNotifier {
     }
   }
 
-  File QrCode;
 
-  Future<String> getQRCode() async {
+  Future<NetworkImage> getQRCode() async {
     debugPrint('getQRCode');
 
     final prefs = await SharedPreferences.getInstance();
@@ -198,6 +200,7 @@ class UserInfo with ChangeNotifier {
     debugPrint(url);
 
     try {
+
       final response = await http.get(
         url,
         headers: {
@@ -207,29 +210,21 @@ class UserInfo with ChangeNotifier {
           // 'version': Urls.versionCode
         },
       );
-      debugPrint(response.body);
 
-      final responseData = json.decode(response.body);
+      final responseData = response.body;
       debugPrint(responseData);
 
-      try {
-        QrCode = responseData;
-        debugPrint('oookkkkkkkkkkkk');
-        debugPrint(responseData);
-
         if (response.statusCode == 200) {
-          notifyListeners();
 
-          return 'success';
-        } else {
-          return 'false';
+          NetworkImage image = NetworkImage(Urls.rootUrl + Urls.getQRCodeEndPoint, headers: {
+            'Authorization': 'Bearer ${prefs.getString('token')}',
+            'Content-Type': 'application/json',
+            'Accept': 'image/png',
+            // 'version': Urls.versionCode
+          },);
+
+          return image;
         }
-      } catch (error) {
-        notifyListeners();
-        debugPrint('sssssssssssssssssssssss');
-
-        return false.toString();
-      }
     } catch (error) {
       debugPrint(error.toString());
       throw error;

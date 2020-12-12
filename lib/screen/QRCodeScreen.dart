@@ -1,85 +1,37 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/auth.dart';
+import 'package:global_gym/provider/urls.dart';
 import 'package:global_gym/provider/user_info.dart';
 import 'package:global_gym/screen/user_profile/forget_verification_code_screen.dart';
 import 'package:global_gym/widget/items/info_edit_item.dart';
+import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class QRCodeScreen extends StatefulWidget {
+class QRCodeScreen extends StatelessWidget {
   static const routeName = '/QRCodeScreen';
 
-  @override
-  _QRCodeScreenState createState() => _QRCodeScreenState();
-}
-
-class _QRCodeScreenState extends State<QRCodeScreen> {
   bool _isLoading = false;
 
   bool _isInit = true;
 
   String _snackBarMessage;
 
-  File image;
+  String image;
 
-  @override
-  void didChangeDependencies() async {
-    if (_isInit) {
-      await getQRCode().then((value) async {
-        if (value == 'true') {
-          print(value.toString());
-          // Navigator.of(context).pushNamed(
-          //     UserNewPasswordScreen.routeName);
+  SharedPreferences prefs;
 
-          image = Provider.of<UserInfo>(context, listen: false).QrCode;
-        } else {
-          print('dsfsdssssssssssssssssssss');
-
-          _snackBarMessage = value;
-          showNotification(context, _snackBarMessage);
-        }
-      });
-
-      setState(() {});
-      _isInit = false;
-    }
-    super.didChangeDependencies();
-  }
-
-  Future<String> getQRCode() async {
-    _isLoading = true;
-    setState(() {});
-
-    String isSent =
-        await Provider.of<UserInfo>(context, listen: false).getQRCode();
-
-    _isLoading = false;
-    setState(() {});
-    return isSent;
-  }
-
-  Future<void> showNotification(BuildContext ctx, String message) async {
-    SnackBar addToCartSnackBar = SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'CircularStd',
-          fontSize: 14.0,
-        ),
-      ),
-      action: SnackBarAction(
-        label: 'Ok',
-        onPressed: () {
-          // Some code to undo the change.
-        },
-      ),
-    );
-    Scaffold.of(ctx).showSnackBar(addToCartSnackBar);
+  Future<NetworkImage> _getQRCode(BuildContext context) async {
+    NetworkImage image = await Provider.of<UserInfo>(context, listen: false).getQRCode();
+    return image;
   }
 
   @override
@@ -152,27 +104,27 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: _isLoading
-                                ? SpinKitFadingCircle(
-                              itemBuilder: (BuildContext context, int index) {
-                                return DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: index.isEven
-                                        ? AppTheme.spinerColor
-                                        : AppTheme.spinerColor,
-                                  ),
-                                );
+                          Center(
+                            child: FutureBuilder(
+                              future: _getQRCode(context),
+                              builder: (BuildContext context, AsyncSnapshot<NetworkImage> snapshot){
+                                if(snapshot.connectionState==ConnectionState.done)
+                                  {
+                                    if(snapshot.hasData){
+                                      return Container(
+                                        color: AppTheme.white,
+                                        child: Image(image: snapshot.data)
+                                      );
+                                    } else if(snapshot.hasError)
+                                      return Center(child: Text("Server Error!"));
+                                    else return Container();
+                                  }
+                                else if(snapshot.connectionState==ConnectionState.waiting)
+                                  return ProgressWidget();
+                                else return Container();
                               },
-                            )
-                                :  Container(
-                              color: AppTheme.white,
-                              child: Image.file(image),
                             ),
-                          )
-                         ,
+                          ),
                           Spacer(),
                           SizedBox(
                             height: deviceHeight * 0.02,
@@ -182,7 +134,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
