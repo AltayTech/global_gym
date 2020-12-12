@@ -48,94 +48,79 @@ class QRCodeScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: AppTheme.appBarColor,
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
-        },
-        child: Builder(
-          builder: (context) => Container(
-            color: AppTheme.white,
-            height: deviceHeight * 0.9,
-            child: Stack(
-              children: <Widget>[
-                SingleChildScrollView(
-                  child: Container(
-                    color: Colors.transparent,
-                    height: deviceHeight * 0.9,
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8, left: 24, right: 24),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/logo.png',
-                            height: 90,
-                            width: 90,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16, bottom: 8),
-                            child: Text(
-                              'Membership Access Key',
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'CircularStd',
-                                fontWeight: FontWeight.w800,
-                                fontSize: textScaleFactor * 18.0,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 0, bottom: 16),
-                            child: Text(
-                              'Please place the QR code in front of the device to scan it',
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              maxLines: 3,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontFamily: 'CircularStd',
-                                fontWeight: FontWeight.w500,
-                                fontSize: textScaleFactor * 16.0,
-                              ),
-                            ),
-                          ),
-                          Center(
-                            child: FutureBuilder(
-                              future: _getQRCode(context),
-                              builder: (BuildContext context, AsyncSnapshot<NetworkImage> snapshot){
-                                if(snapshot.connectionState==ConnectionState.done)
-                                  {
-                                    if(snapshot.hasData){
-                                      return Container(
-                                        color: AppTheme.white,
-                                        child: Image(image: snapshot.data)
-                                      );
-                                    } else if(snapshot.hasError)
-                                      return Center(child: Text("Server Error!"));
-                                    else return Container();
-                                  }
-                                else if(snapshot.connectionState==ConnectionState.waiting)
-                                  return ProgressWidget();
-                                else return Container();
-                              },
-                            ),
-                          ),
-                          Spacer(),
-                          SizedBox(
-                            height: deviceHeight * 0.02,
-                          )
-                        ],
-                      ),
+      body: Container(
+        color: AppTheme.white,
+        child: Padding(
+          padding:
+          const EdgeInsets.only(left: 24, right: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/logo.png',
+                height: 90,
+                width: 90,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 8),
+                child: Text(
+                  'Membership Access Key',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'CircularStd',
+                    fontWeight: FontWeight.w800,
+                    fontSize: textScaleFactor * 18.0,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 0, bottom: 16),
+                child: Text(
+                  'Please place the QR code in front of the device to scan it',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'CircularStd',
+                    fontWeight: FontWeight.w500,
+                    fontSize: textScaleFactor * 16.0,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  child: Center(
+                    child: FutureBuilder(
+                      future: _getQRCode(context),
+                      builder: (BuildContext context, AsyncSnapshot<NetworkImage> snapshot){
+                        if(snapshot.connectionState==ConnectionState.done)
+                        {
+                          if(snapshot.hasData){
+                            return Container(
+                                color: AppTheme.white,
+                                child: Image(image: snapshot.data)
+                            );
+                          } else if(snapshot.hasError)
+                            return Center(child: Text("Server Error!"));
+                          else return Container();
+                        }
+                        else if(snapshot.connectionState==ConnectionState.waiting)
+                          return ProgressWidget();
+                        else return Container();
+                      },
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              )
+            ],
           ),
         ),
       ),
