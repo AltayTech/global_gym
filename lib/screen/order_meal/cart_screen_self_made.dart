@@ -8,16 +8,16 @@ import 'package:global_gym/widget/items/snake_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreenSelfMade extends StatefulWidget {
   final PanelController panelController;
 
-  CartScreen({@required this.panelController});
+  CartScreenSelfMade({@required this.panelController});
 
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _CartScreenSelfMadeState createState() => _CartScreenSelfMadeState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenSelfMadeState extends State<CartScreenSelfMade> {
   var _isLoadingCart = false;
 
   @override

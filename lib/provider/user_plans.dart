@@ -3,9 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:global_gym/models/Bill.dart';
 import 'package:global_gym/models/MainBill.dart';
-import 'package:global_gym/models/orderMeal/FoodHistoryOrder.dart';
-import 'package:global_gym/models/orderMeal/HistoryFoodCart.dart';
-import 'package:global_gym/models/orderMeal/MainOrder.dart';
 import 'package:global_gym/models/MainReserve.dart';
 import 'package:global_gym/models/Reserve.dart';
 import 'package:global_gym/models/main_exercises.dart';
@@ -15,12 +12,18 @@ import 'package:global_gym/models/measurment/MainMeasurement.dart';
 import 'package:global_gym/models/measurment/MainMeasurementDetail.dart';
 import 'package:global_gym/models/measurment/Measurement.dart';
 import 'package:global_gym/models/nutrition.dart';
+import 'package:global_gym/models/ordeMealSelfMade/FoodGroupSelfeMade.dart';
+import 'package:global_gym/models/ordeMealSelfMade/FoodSelfMade.dart';
+import 'package:global_gym/models/ordeMealSelfMade/MainFoodGroupSelfMade.dart';
 import 'package:global_gym/models/orderMeal/FoodCart.dart';
 import 'package:global_gym/models/orderMeal/FoodGroup.dart';
+import 'package:global_gym/models/orderMeal/FoodHistoryOrder.dart';
 import 'package:global_gym/models/orderMeal/FoodOrder.dart';
 import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
+import 'package:global_gym/models/orderMeal/HistoryFoodCart.dart';
 import 'package:global_gym/models/orderMeal/MainFoodCart.dart';
 import 'package:global_gym/models/orderMeal/MainFoodGroup.dart';
+import 'package:global_gym/models/orderMeal/MainOrder.dart';
 import 'package:global_gym/models/orderMeal/Order.dart';
 import 'package:global_gym/models/week_day_exercise.dart';
 import 'package:global_gym/provider/urls.dart';
@@ -682,7 +685,7 @@ class UserPlans with ChangeNotifier {
 
   List<Bill> get billsList => _billsList;
 
-  set billsList(List<Bill> bill){
+  set billsList(List<Bill> bill) {
     _billsList = bill;
     notifyListeners();
   }
@@ -794,12 +797,79 @@ class UserPlans with ChangeNotifier {
     }
   }
 
+  List<FoodGroupSelfMade> _foodGroupSelfMade = [];
+
+  Future<String> getFoodGroupSelfMadeList() async {
+    print('getFoodGroupSelfMadeList');
+
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+    final url = Urls.rootUrl + Urls.getSelfMadeFoodGroupEndPoint;
+
+    print(url);
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          // 'version': Urls.versionCode
+        },
+      );
+      print(response.body);
+
+      final responseData = json.decode(response.body);
+      print(responseData);
+
+      try {
+        MainFoodGroupSelfeMade mainFoodGroupSelfeMade = MainFoodGroupSelfeMade.fromMap(responseData);
+        print('oookkkkkkkkkkkk');
+
+        if (mainFoodGroupSelfeMade.IsSuccess) {
+          notifyListeners();
+
+          _foodGroupSelfMade = mainFoodGroupSelfeMade.Value;
+
+          print(mainFoodGroupSelfeMade.Message.toString());
+
+          return mainFoodGroupSelfeMade.IsSuccess.toString();
+        } else {
+          print(mainFoodGroupSelfeMade.Message.toString());
+
+          return mainFoodGroupSelfeMade.Message;
+        }
+      } catch (error) {
+        notifyListeners();
+        print('sssssssssssssssssssssss');
+
+        return false.toString();
+      }
+    } catch (error) {
+      print(error.toString());
+      throw error;
+    }
+  }
+
+  List<FoodGroupSelfMade> get foodGroupSelfMade => _foodGroupSelfMade;
+
+  List<FoodSelfMade> _selectedSelfMade = List<FoodSelfMade>.generate(3, (index) => null);
+
+  List<FoodSelfMade> get selectedSelfMade => _selectedSelfMade;
+
+  set selectedSelfMade(List<FoodSelfMade> value) {
+    _selectedSelfMade = value;
+  }
 
   HistoryFoodCard _historyOrderDetails;
 
   HistoryFoodCard get historyOrderDetails => _historyOrderDetails;
 
-  set historyOrderDetails(HistoryFoodCard historyFoodCard){
+  set historyOrderDetails(HistoryFoodCard historyFoodCard) {
     _historyOrderDetails = historyFoodCard;
     notifyListeners();
   }
@@ -812,47 +882,42 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-      final url = Urls.rootUrl +
-          Urls.getFoodOrderHistoryDetailsEndPoint +
-          '?Id=$_orderId';
+    final url = Urls.rootUrl + Urls.getFoodOrderHistoryDetailsEndPoint + '?Id=$_orderId';
 
-      try {
-        final response = await http.get(
-          url,
-          headers: {
-            'Authorization': 'Bearer $_token',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            // 'version': Urls.versionCode
-          },
-        );
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          // 'version': Urls.versionCode
+        },
+      );
 
-        final responseData = json.decode(response.body);
+      final responseData = json.decode(response.body);
 
-        MainHistoryFoodCart mainHistoryFoodCart = MainHistoryFoodCart.fromMap(responseData);
+      MainHistoryFoodCart mainHistoryFoodCart = MainHistoryFoodCart.fromMap(responseData);
 
-        if (mainHistoryFoodCart.IsSuccess) {
-          _historyOrderDetails = mainHistoryFoodCart.Value;
-          print(mainHistoryFoodCart.Message.toString());
+      if (mainHistoryFoodCart.IsSuccess) {
+        _historyOrderDetails = mainHistoryFoodCart.Value;
+        print(mainHistoryFoodCart.Message.toString());
 
-          notifyListeners();
-          return mainHistoryFoodCart.IsSuccess.toString();
-        } else {
-          print(mainHistoryFoodCart.Message.toString());
-          return mainHistoryFoodCart.Message;
-        }
-      } catch (error) {
         notifyListeners();
-        print(error.toString());
-        throw error;
+        return mainHistoryFoodCart.IsSuccess.toString();
+      } else {
+        print(mainHistoryFoodCart.Message.toString());
+        return mainHistoryFoodCart.Message;
       }
-
-      historyOrderDetails = HistoryFoodCard(
-          Id: null, SubTotalAmount: null,
-          FoodOrderDetailsCount: null,
-          FoodOrderDetails: []);
+    } catch (error) {
       notifyListeners();
-      return 'No item in cart';
-  }
+      print(error.toString());
+      throw error;
+    }
 
+    historyOrderDetails =
+        HistoryFoodCard(Id: null, SubTotalAmount: null, FoodOrderDetailsCount: null, FoodOrderDetails: []);
+    notifyListeners();
+    return 'No item in cart';
+  }
 }

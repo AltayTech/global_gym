@@ -26,14 +26,11 @@ class _SurveyScreenState extends State<SurveyScreen> {
 
   Future<void> answerQuestion(bool answer) {
     if (itemIndex < 6) {
-      Provider.of<UserInfo>(context, listen: false)
-          .surveyQuestionList[itemIndex]
-          .answer = answer;
+      Provider.of<UserInfo>(context, listen: false).surveyQuestionList[itemIndex].answer = answer;
       itemIndex++;
       setState(() {});
     } else if (itemIndex == 6) {
-      Navigator.of(context)
-          .pushNamed(UserRegisterSurveyCompleteScreen.routeName);
+      Navigator.of(context).pushNamed(UserRegisterSurveyCompleteScreen.routeName);
     }
   }
 
@@ -88,8 +85,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                     width: 90,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 16, left: 37, right: 37, bottom: 16),
+                    padding: const EdgeInsets.only(top: 16, left: 37, right: 37, bottom: 16),
                     child: Text(
                       'Adult Pre Exercise Screening Tools',
                       overflow: TextOverflow.ellipsis,
@@ -104,8 +100,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 16, left: 37, right: 37, bottom: 16),
+                    padding: const EdgeInsets.only(top: 16, left: 37, right: 37, bottom: 16),
                     child: Container(
                       color: Color(0xffdfdfdf),
                       child: Padding(
@@ -114,8 +109,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 8, right: 8, bottom: 0),
+                              padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 0),
                               child: Text(
                                 '${surveyQuestion[itemIndex].id}/7',
                                 overflow: TextOverflow.ellipsis,
@@ -130,8 +124,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 8, right: 8, bottom: 8),
+                              padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 8),
                               child: Text(
                                 surveyQuestion[itemIndex].content,
                                 overflow: TextOverflow.ellipsis,
@@ -151,8 +144,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 80, left: 37, right: 37),
+                    padding: const EdgeInsets.only(top: 80, left: 37, right: 37),
                     child: InkWell(
                       onTap: () {
                         answerQuestion(false);
@@ -160,9 +152,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
                       child: Container(
                         height: 48,
                         width: 340,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            border: Border.all(color: Colors.black)),
+                        decoration: BoxDecoration(color: Colors.black, border: Border.all(color: Colors.black)),
                         child: Center(
                           child: Text(
                             'No',
@@ -185,15 +175,12 @@ class _SurveyScreenState extends State<SurveyScreen> {
                     child: InkWell(
                       onTap: () {
                         // answerQuestion(true);
-                        Navigator.of(context)
-                            .pushNamed(UserRegisterSurveyWrongScreen.routeName);
+                        Navigator.of(context).pushNamed(UserRegisterSurveyWrongScreen.routeName);
                       },
                       child: Container(
                         height: 48,
                         width: 340,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.black)),
+                        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.black)),
                         child: Center(
                           child: Text(
                             'Yes',
