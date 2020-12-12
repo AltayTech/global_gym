@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:global_gym/classes/media_query_helper.dart';
+import 'package:global_gym/models/ordeMealSelfMade/FoodSelfMade.dart';
 import 'package:global_gym/models/orderMeal/Food.dart';
 import 'package:global_gym/provider/dimention.dart';
 import 'package:global_gym/provider/user_plans.dart';
-import 'package:global_gym/screen/order_meal/cart_screen.dart';
 import 'package:global_gym/screen/order_meal/cart_screen_self_made.dart';
 import 'package:global_gym/screen/order_meal/order_meal_pre_made.dart';
 import 'package:global_gym/screen/order_meal/order_meal_selfe_made.dart';
+import 'package:global_gym/widget/items/OrderMealSelfMadeItem.dart';
 import 'package:global_gym/widget/items/order_meal_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class _OrderMealSelfMadeListState extends State<OrderMealSelfMadeList> {
 
   @override
   void initState() {
-    Provider.of<UserPlans>(context, listen: false).getFoodList();
+    // Provider.of<UserPlans>(context, listen: false).getFoodList();
     super.initState();
   }
 
@@ -87,7 +88,6 @@ class _OrderMealSelfMadeListState extends State<OrderMealSelfMadeList> {
                 ),
               ),
             ),
-
           ],
         ),
         body: Container(
@@ -159,7 +159,12 @@ class _OrderMealSelfMadeListState extends State<OrderMealSelfMadeList> {
                     ),
                     Expanded(
                       child: Padding(
-                          padding: const EdgeInsets.only(left: 16, right: 16), child: buildContent(context, vm)),
+                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        child: buildContent(
+                          context,
+                          vm,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -202,16 +207,16 @@ class _OrderMealSelfMadeListState extends State<OrderMealSelfMadeList> {
   }
 
   Widget buildContent(BuildContext context, UserPlans vm) {
-    if (vm.foodGroupList == null || vm.foodOrderInfo == null)
+    if (vm.foodGroupSelfMade == null )
       return ProgressWidget();
     else {
-      List<Food> foodList = [];
-      vm.foodGroupList.map((e) => foodList.addAll(e.Foods)).toList();
+      List<FoodSelfMade> foodList = [];
+      vm.selectedSelfMade.map((e) => foodList.add(e)).toList();
 
       return Container(
         child: _isLoading
             ? ProgressWidget()
-            : vm.foodGroupList.length > 0
+            : vm.foodGroupSelfMade.length > 0
                 ? ListView.builder(
                     itemCount: foodList.length,
                     padding: EdgeInsets.all(0),
@@ -219,7 +224,7 @@ class _OrderMealSelfMadeListState extends State<OrderMealSelfMadeList> {
                       return Container(
                         width: getWidth(context),
                         height: 130,
-                        child: OrderMealItem(
+                        child: OrderMealSelfMadeItem(
                           food: foodList[index],
                         ),
                       );
