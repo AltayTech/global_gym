@@ -10,10 +10,12 @@ import 'package:global_gym/widget/items/order_cart_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:global_gym/widget/items/snake_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HistoryCartScreen extends StatefulWidget {
   final PanelController panelController;
+
   HistoryCartScreen({@required this.panelController});
 
   @override
@@ -22,6 +24,8 @@ class HistoryCartScreen extends StatefulWidget {
 
 class _HistoryCartScreenState extends State<HistoryCartScreen> {
   var _isLoadingCart = false;
+
+  bool _hasChanged = false;
 
   @override
   void initState() {
@@ -39,6 +43,7 @@ class _HistoryCartScreenState extends State<HistoryCartScreen> {
     double deviceHeight = getHeight(context);
     double deviceWidth = getWidth(context);
     double textScaleFactor = getTextScaleFactor(context);
+
 
     if (vm.historyOrderDetails == null || _isLoadingCart)
       return ProgressWidget();
@@ -83,65 +88,116 @@ class _HistoryCartScreenState extends State<HistoryCartScreen> {
                   ),
                 ),
                 Expanded(
-                        child: foodOrderCart != null
-                            ? foodOrderCart
-                            .FoodOrderDetails.length >
-                            0 ? ListView.builder(
-                                // controller: _scrollController,
-                                // scrollDirection: Axis.vertical,
-                                itemCount: foodOrderCart.FoodOrderDetails.length,
-                                shrinkWrap: true,
-                                primary: false,
-                                padding: EdgeInsets.all(0),
-                                itemBuilder: (ctx, i) => Container(
-                                      width: deviceWidth,
-                                      height: 130,
-                                      child: HistoryOrderCartItem(
-                                        food: foodOrderCart
-                                            .FoodOrderDetails[i],
-                                          canEdit: true//foodOrderCart.statustype,
-                                      ),
-                                    ))
-                            : _emptyWidget(context) : _emptyWidget(context) ,
-                      ),
-                true ? Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: InkWell(
-                    onTap:
-                    foodOrderCart != null && foodOrderCart.FoodOrderDetails.length > 0
-                            ? () async {
-                                await finalizeOrderCart().then((value) async {
-                                    SnakeBar.show(context, message: value);
-                                });
-                              }
-                            : () {},
-                    child: Container(
-                      height: 48,
-                      width: 366,
-                      decoration: BoxDecoration(
-                          color: foodOrderCart != null && foodOrderCart
-                                      .FoodOrderDetails.length >
-                                  0
-                              ? Colors.black
-                              : Colors.grey,
-                          border: Border.all(color: Colors.black)),
-                      child: Center(
-                        child: Text(
-                          'Save Change',
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'CircularStd',
-                            fontWeight: FontWeight.w800,
-                            fontSize: textScaleFactor * 16.0,
-                          ),
-                        ),
+                  child: foodOrderCart != null
+                      ? foodOrderCart.FoodOrderInfo.FoodOrderDetails.length > 0
+                          ? ListView.builder(
+                              // controller: _scrollController,
+                              // scrollDirection: Axis.vertical,
+                              itemCount: foodOrderCart
+                                  .FoodOrderInfo.FoodOrderDetails.length,
+                              shrinkWrap: true,
+                              primary: false,
+                              padding: EdgeInsets.all(0),
+                              itemBuilder: (ctx, i) => Container(
+                                    width: deviceWidth,
+                                    height: 130,
+                                    child: HistoryOrderCartItem(
+                                      food: foodOrderCart
+                                          .FoodOrderInfo.FoodOrderDetails[i],
+                                      canEdit:
+                                          foodOrderCart.OrderStatusTypes == 1
+                                              ? true
+                                              : false
+                                    ),
+                                  ))
+                          : _emptyWidget(context)
+                      : _emptyWidget(context),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Total',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: 'CircularStd',
+                        fontWeight: FontWeight.w600,
+                        fontSize: textScaleFactor * 16.0,
                       ),
                     ),
-                  ),
-                ) : Container(),
+                    Spacer(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '\$',
+                          textAlign: TextAlign.right,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w600,
+                            fontSize: textScaleFactor * 13.0,
+                          ),
+                        ),
+                        Text(
+                          '${foodOrderCart.FoodOrderInfo != null && foodOrderCart.FoodOrderInfo.SubTotalAmount != null ? foodOrderCart.FoodOrderInfo.SubTotalAmount : 0}',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'CircularStd',
+                            fontWeight: FontWeight.w600,
+                            fontSize: textScaleFactor * 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                foodOrderCart.OrderStatusTypes == 1
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: InkWell(
+                          onTap: foodOrderCart != null && vm.historyOrderChanged
+                              ? () async {
+                                  await finalizeOrderCart().then((value) async {
+                                    SnakeBar.show(context, message: value);
+                                  });
+                                }
+                              : () {},
+                          child: Container(
+                            height: 48,
+                            width: 366,
+                            decoration: BoxDecoration(
+                                color: foodOrderCart != null && vm.historyOrderChanged
+                                    ? Colors.black
+                                    : Colors.grey,
+                                border: Border.all(color: Colors.black)),
+                            child: Center(
+                              child: Text(
+                                'Save Change',
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'CircularStd',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: textScaleFactor * 16.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ],
@@ -175,6 +231,12 @@ class _HistoryCartScreenState extends State<HistoryCartScreen> {
     _isLoadingCart = true;
     setState(() {});
 
+    final prefs = await SharedPreferences.getInstance();
+
+    var _hashId = prefs.getString('historyHashId');
+
+    prefs.setString('hashId', _hashId);
+
     String isSent = await Provider.of<UserPlans>(context, listen: false)
         .finalizeOrderCart()
         .then((value) {
@@ -190,5 +252,4 @@ class _HistoryCartScreenState extends State<HistoryCartScreen> {
     setState(() {});
     return isSent;
   }
-
 }

@@ -106,12 +106,12 @@ class QRCodeScreen extends StatelessWidget {
                                 child: Image(image: snapshot.data)
                             );
                           } else if(snapshot.hasError)
-                            return Center(child: Text("Server Error!"));
+                            return Center(child: Text("Network Error!"));
                           else return Container();
                         }
                         else if(snapshot.connectionState==ConnectionState.waiting)
                           return ProgressWidget();
-                        else return Container();
+                        else return Center(child: Text("Network Error!"));
                       },
                     ),
                   ),

@@ -13,6 +13,7 @@ import 'package:global_gym/widget/items/OrderScreenItem.dart';
 import 'package:global_gym/widget/items/order_cart_item.dart';
 import 'package:global_gym/widget/items/order_meal_item.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   List<Order> orderList = [];
   final PanelController panelController = PanelController();
+
 
   @override
   void didChangeDependencies() async {
@@ -105,6 +107,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
@@ -249,6 +252,16 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
             ),
           ),
           SlidingUpPanel(
+            onPanelClosed: () async {
+
+              final prefs = await SharedPreferences.getInstance();
+
+              // if(!notChanged)
+              //   prefs.setString('hashId', '');
+
+              await Provider.of<UserPlans>(context, listen: false).getOrderList();
+
+            },
               backdropEnabled: true,
               isDraggable: false,
               // panelSnapping: false,

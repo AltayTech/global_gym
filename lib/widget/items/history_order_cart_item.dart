@@ -6,6 +6,7 @@ import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoryOrderCartItem extends StatefulWidget {
   final FoodCart food;
@@ -13,7 +14,7 @@ class HistoryOrderCartItem extends StatefulWidget {
 
   HistoryOrderCartItem({
     this.food,
-    this.canEdit,
+    this.canEdit
   });
 
   @override
@@ -31,7 +32,9 @@ class _OrderCartItemState extends State<HistoryOrderCartItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .addFoodToCart(foodId);
+        .addFoodToHistoryCart(foodId);
+
+
     print(isSent);
     _isLoading = false;
     setState(() {});
@@ -43,7 +46,9 @@ class _OrderCartItemState extends State<HistoryOrderCartItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .decreaseFoodToCart(foodId);
+        .decreaseFoodToHistoryCart(foodId);
+
+
     _isLoading = false;
     setState(() {});
     return isSent;
@@ -54,7 +59,8 @@ class _OrderCartItemState extends State<HistoryOrderCartItem> {
     setState(() {});
 
     String isSent = await Provider.of<UserPlans>(context, listen: false)
-        .removeFoodFromCart(foodId);
+        .removeFoodFromHistoryCart(foodId);
+
 
     _isLoading = false;
     setState(() {});
@@ -71,8 +77,8 @@ class _OrderCartItemState extends State<HistoryOrderCartItem> {
 
     final vm = Provider.of<UserPlans>(context);
 
-    if(vm.historyOrderDetails!=null && vm.historyOrderDetails.FoodOrderDetails!=null) {
-        productCount = vm.historyOrderDetails.FoodOrderDetails.firstWhere((element) => element.FoodId == widget.food.FoodId).Quantity;
+    if(vm.historyOrderDetails !=null && vm.historyOrderDetails.FoodOrderInfo!=null) {
+        productCount = vm.historyOrderDetails.FoodOrderInfo.FoodOrderDetails.firstWhere((element) => element.FoodId == widget.food.FoodId).Quantity;
     }
 
     return Padding(
@@ -145,14 +151,23 @@ class _OrderCartItemState extends State<HistoryOrderCartItem> {
                                     children: <Widget>[
                                       Expanded(
                                         child: InkWell(
-                                          onTap: () {
+                                          onTap: () async {
                                             if (productCount > 1) {
-                                              decreaseFromCart(
+                                              await decreaseFromCart(
                                                   widget.food.FoodId);
                                             } else {
-                                              removeFromCart(
+                                              await removeFromCart(
                                                   widget.food.FoodId);
                                             }
+
+                                            final prefs = await SharedPreferences.getInstance();
+
+                                            var _hashId = prefs.getString('historyHashId');
+
+                                            prefs.setString('hashId', _hashId);
+
+                                            Provider.of<UserPlans>(context, listen: false).historyOrderChanged = true;
+
                                           },
                                           child: Container(
                                             height: 40,
@@ -179,7 +194,15 @@ class _OrderCartItemState extends State<HistoryOrderCartItem> {
                                       Expanded(
                                           child: InkWell(
                                         onTap: () async {
-                                          addToCart(widget.food.FoodId);
+                                          await addToCart(widget.food.FoodId);
+                                          final prefs = await SharedPreferences.getInstance();
+
+                                          var _hashId = prefs.getString('historyHashId');
+
+                                          prefs.setString('hashId', _hashId);
+
+                                          Provider.of<UserPlans>(context, listen: false).historyOrderChanged = true;
+
                                         },
                                         child: Container(
                                             height: 40,
