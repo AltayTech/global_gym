@@ -1,21 +1,20 @@
 import 'package:flutter/foundation.dart';
-import 'package:global_gym/models/orderMeal/FoodHistoryOrder.dart';
-import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
+import 'package:global_gym/models/orderMeal/HistoryFoodCard.dart';
 
-class MainHistoryFoodCart {
+class HistoryFoodCartResponse {
   final bool IsSuccess;
   final String Message;
   final HistoryFoodCard Value;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
-  const MainHistoryFoodCart({
+  const HistoryFoodCartResponse({
     @required this.IsSuccess,
     @required this.Message,
     @required this.Value,
   });
 
-  MainHistoryFoodCart copyWith({
+  HistoryFoodCartResponse copyWith({
     bool IsSuccess,
     String Message,
     HistoryFoodCard Value,
@@ -26,7 +25,7 @@ class MainHistoryFoodCart {
       return this;
     }
 
-    return new MainHistoryFoodCart(
+    return new HistoryFoodCartResponse(
       IsSuccess: IsSuccess ?? this.IsSuccess,
       Message: Message ?? this.Message,
       Value: Value ?? this.Value,
@@ -41,7 +40,7 @@ class MainHistoryFoodCart {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          (other is MainHistoryFoodCart &&
+          (other is HistoryFoodCartResponse &&
               runtimeType == other.runtimeType &&
               IsSuccess == other.IsSuccess &&
               Message == other.Message &&
@@ -50,8 +49,8 @@ class MainHistoryFoodCart {
   @override
   int get hashCode => IsSuccess.hashCode ^ Message.hashCode ^ Value.hashCode;
 
-  factory MainHistoryFoodCart.fromMap(Map<String, dynamic> map) {
-    return new MainHistoryFoodCart(
+  factory HistoryFoodCartResponse.fromMap(Map<String, dynamic> map) {
+    return new HistoryFoodCartResponse(
       IsSuccess: map['IsSuccess'],
       Message: map['Message'],
       Value: map['Value'] != null

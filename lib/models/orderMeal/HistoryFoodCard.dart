@@ -3,9 +3,13 @@ import 'package:global_gym/models/orderMeal/FoodCart.dart';
 
 class HistoryFoodCard with ChangeNotifier {
   final int Id;
+  final String HashId;
   final double SubTotalAmount;
   final int FoodOrderDetailsCount;
   final List<FoodCart> FoodOrderDetails;
+  final String UserFullName;
+  final String FinalizedDateTime;
+  final int OrderStatusTypes;
 
 //<editor-fold desc="Data Methods" defaultstate="collapsed">
 
@@ -14,31 +18,44 @@ class HistoryFoodCard with ChangeNotifier {
     @required this.SubTotalAmount,
     @required this.FoodOrderDetailsCount,
     @required this.FoodOrderDetails,
+    @required this.HashId,
+    @required this.FinalizedDateTime,
+    @required this.OrderStatusTypes,
+    @required this.UserFullName,
   });
 
   HistoryFoodCard copyWith({
     int Id,
-    int SubTotalAmount,
+    String HashId,
+    double SubTotalAmount,
     int FoodOrderDetailsCount,
     List<FoodCart> FoodOrderDetails,
+    String UserFullName,
+    String FinalizedDateTime,
+    int OrderStatusTypes,
   }) {
     if ((Id == null ||
         identical(Id, this.Id)) &&
         (SubTotalAmount == null ||
         identical(SubTotalAmount, this.SubTotalAmount)) &&
-        (FoodOrderDetailsCount == null ||
-            identical(FoodOrderDetailsCount, this.FoodOrderDetailsCount)) &&
-        (FoodOrderDetails == null ||
-            identical(FoodOrderDetails, this.FoodOrderDetails))) {
+        (FoodOrderDetailsCount == null || identical(FoodOrderDetailsCount, this.FoodOrderDetailsCount)) &&
+        (HashId == null || identical(HashId, this.HashId)) &&
+        (UserFullName == null || identical(UserFullName, this.UserFullName)) &&
+        (FinalizedDateTime == null || identical(FinalizedDateTime, this.FinalizedDateTime)) &&
+        (OrderStatusTypes == null || identical(OrderStatusTypes, this.OrderStatusTypes)) &&
+        (FoodOrderDetails == null || identical(FoodOrderDetails, this.FoodOrderDetails))) {
       return this;
     }
 
     return new HistoryFoodCard(
       Id: Id ?? this.Id,
       SubTotalAmount: SubTotalAmount ?? this.SubTotalAmount,
-      FoodOrderDetailsCount:
-      FoodOrderDetailsCount ?? this.FoodOrderDetailsCount,
+      FoodOrderDetailsCount: FoodOrderDetailsCount ?? this.FoodOrderDetailsCount,
       FoodOrderDetails: FoodOrderDetails ?? this.FoodOrderDetails,
+      HashId: HashId ?? this.HashId,
+      FinalizedDateTime: FinalizedDateTime ?? this.FinalizedDateTime,
+      OrderStatusTypes: OrderStatusTypes ?? this.OrderStatusTypes,
+      UserFullName: UserFullName ?? this.UserFullName,
     );
   }
 
@@ -78,12 +95,20 @@ class HistoryFoodCard with ChangeNotifier {
         SubTotalAmount: map['SubTotalAmount'],
         FoodOrderDetailsCount: map['FoodOrderDetailsCount'],
         FoodOrderDetails: foods,
+        HashId: map['HashId'],
+        FinalizedDateTime: map['FinalizedDateTime'],
+        UserFullName: map['UserFullName'],
+        OrderStatusTypes: map['OrderStatusTypes'],
       );
     } else return HistoryFoodCard(
       Id: 0,
       SubTotalAmount: 0.0,
       FoodOrderDetailsCount: 0,
       FoodOrderDetails: foods,
+      HashId: '',
+      FinalizedDateTime: '',
+      OrderStatusTypes: 1,
+      UserFullName: ''
     );
 
   }
@@ -94,6 +119,10 @@ class HistoryFoodCard with ChangeNotifier {
       'SubTotalAmount': this.SubTotalAmount,
       'FoodOrderDetailsCount': this.FoodOrderDetailsCount,
       'FoodOrderDetails': this.FoodOrderDetails,
+      'HashId': this.HashId,
+      'FinalizedDateTime': this.FinalizedDateTime,
+      'UserFullName': this.UserFullName,
+      'OrderStatusTypes': this.OrderStatusTypes
     };
   }
 
