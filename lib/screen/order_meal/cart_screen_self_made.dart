@@ -22,7 +22,7 @@ class _CartScreenSelfMadeState extends State<CartScreenSelfMade> {
 
   @override
   void initState() {
-    Provider.of<UserPlans>(context, listen: false).getOrderCart();
+    Provider.of<UserPlans>(context, listen: false).getSelfMadeOrderCart();
     super.initState();
   }
 
@@ -37,10 +37,10 @@ class _CartScreenSelfMadeState extends State<CartScreenSelfMade> {
     double deviceWidth = getWidth(context);
     double textScaleFactor = getTextScaleFactor(context);
 
-    if (vm.foodOrderInfo == null || _isLoadingCart)
+    if (vm.selfMadeFoodOrderInfo == null || _isLoadingCart)
       return ProgressWidget();
     else {
-      var foodOrderCart = vm.foodOrderInfo;
+      var foodOrderCart = vm.selfMadeFoodOrderInfo;
       return Container(
         padding: EdgeInsets.all(16.0),
         child: Stack(
@@ -220,7 +220,7 @@ class _CartScreenSelfMadeState extends State<CartScreenSelfMade> {
     _isLoadingCart = true;
     setState(() {});
 
-    String isSent = await Provider.of<UserPlans>(context, listen: false).finalizeOrderCart().then((value) {
+    String isSent = await Provider.of<UserPlans>(context, listen: false).finalizeSelfMadeOrderCart().then((value) {
       if (value == 'true') {
         widget.panelController.close();
         return 'Order is send successfully';

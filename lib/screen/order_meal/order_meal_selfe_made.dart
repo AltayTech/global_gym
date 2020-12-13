@@ -3,7 +3,6 @@ import 'package:global_gym/models/ordeMealSelfMade/FoodGroupSelfeMade.dart';
 import 'package:global_gym/models/ordeMealSelfMade/FoodSelfMade.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/screen/order_meal/order_meal_self_made_list.dart';
-import 'package:global_gym/screen/user_profile/user_register_survey_complete_screen.dart';
 import 'package:provider/provider.dart';
 
 class OrderMealSelfMade extends StatefulWidget {
@@ -79,12 +78,15 @@ class _OrderMealSelfMadeState extends State<OrderMealSelfMade> {
         itemIndex++;
         debugPrint(foodValueList.length.toString());
 
-        selectedIndex=0;
-        foodValue=null;
+        selectedIndex = 0;
+        foodValue = null;
         foodValueList = listFoodGroup[itemIndex].SelfMadeFoods;
         debugPrint(foodValueList.length.toString());
         setState(() {});
       } else if (itemIndex == listFoodGroup.length - 1) {
+        if (listFoodGroup[itemIndex].SelfMadeFoods.isNotEmpty)
+          Provider.of<UserPlans>(context, listen: false).selectedSelfMade[itemIndex] =
+              listFoodGroup[itemIndex].SelfMadeFoods[selectedIndex];
         Navigator.of(context).pushNamed(OrderMealSelfMadeList.routeName);
       }
     } else {
@@ -203,7 +205,6 @@ class _OrderMealSelfMadeState extends State<OrderMealSelfMade> {
                               border: Border.all(color: Colors.grey, width: 0.5),
                               borderRadius: BorderRadius.circular(0)),
                           child: DropdownButton<String>(
-
                             hint: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
@@ -240,7 +241,6 @@ class _OrderMealSelfMadeState extends State<OrderMealSelfMade> {
                             ),
                             items: foodValueList.map<DropdownMenuItem<String>>((FoodSelfMade value) {
                               return DropdownMenuItem<String>(
-
                                 value: value.Name,
                                 child: Container(
                                   width: deviceWidth * 0.7,

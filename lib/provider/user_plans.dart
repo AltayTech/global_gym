@@ -1100,4 +1100,306 @@ class UserPlans with ChangeNotifier {
   }
 
 
+
+
+
+  List<FoodCart> selfMadeMealItemList = [];
+  FoodOrderCart selfMadeFoodOrderInfo;
+  Future<String> addSelfMadeFoodToCart(int foodId) async {
+    print('addSelfMadeFoodToCart');
+
+    final url = Urls.rootUrl + Urls.addSelfMadeFoodToCartEndPoint;
+
+    print(url);
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+    var _hashId = prefs.getString('hashId');
+    print(_hashId);
+    print(foodId);
+
+    try {
+      final response = await http.post(url,
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'version': Urls.versionCode
+          },
+          body: jsonEncode({
+            "HashFoodOrderId": _hashId,
+            "FoodId": foodId,
+          }));
+
+      final responseData = json.decode(response.body);
+      print(responseData);
+
+      MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+
+      if (mainFoodCart.IsSuccess) {
+        selfMadeFoodOrderInfo = mainFoodCart.Value;
+        print(mainFoodCart.Message.toString());
+        notifyListeners();
+
+        final prefs = await SharedPreferences.getInstance();
+        _hashId = mainFoodCart.Value.HashFoodOrderId;
+        prefs.setString('hashId', _hashId);
+
+        return mainFoodCart.IsSuccess.toString();
+      } else {
+        print(mainFoodCart.Message.toString());
+        return mainFoodCart.Message;
+      }
+    } catch (error) {
+      notifyListeners();
+      print(error.toString());
+      throw error;
+    }
+  }
+
+  Future<String> decreaseSelfMadeFoodToCart(int foodId) async {
+    print('decreaseFoodToCart');
+
+    final url = Urls.rootUrl + Urls.decreaseSelfMadeFoodToCartEndPoint;
+
+    print(url);
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+    var _hashId = prefs.getString('hashId');
+    print(_hashId);
+
+    try {
+      final response = await http.post(url,
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'version': Urls.versionCode
+          },
+          body: jsonEncode({
+            "HashFoodOrderId": _hashId,
+            "FoodId": foodId,
+          }));
+
+      final responseData = json.decode(response.body);
+      print(responseData);
+
+      MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+
+      if (mainFoodCart.IsSuccess) {
+        selfMadeFoodOrderInfo = mainFoodCart.Value;
+        print(mainFoodCart.Message.toString());
+        notifyListeners();
+
+        final prefs = await SharedPreferences.getInstance();
+        _hashId = mainFoodCart.Value.HashFoodOrderId;
+
+        prefs.setString('hashId', _hashId);
+
+        return mainFoodCart.IsSuccess.toString();
+      } else {
+        print(mainFoodCart.Message.toString());
+
+        return mainFoodCart.Message;
+      }
+    } catch (error) {
+      print(error.toString());
+      notifyListeners();
+      throw error;
+    }
+  }
+
+  Future<String> removeSelfMadeFoodFromCart(int foodId) async {
+    print('decreaseFoodToCart');
+
+    final url = Urls.rootUrl + Urls.removeSelfMadeFoodFromCartEndPoint;
+
+    print(url);
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+    var _hashId = prefs.getString('hashId');
+
+    try {
+      final response = await http.post(url,
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'version': Urls.versionCode
+          },
+          body: jsonEncode({
+            "HashFoodOrderId": _hashId,
+            "FoodId": foodId,
+          }));
+
+      final responseData = json.decode(response.body);
+      print(responseData);
+
+      MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+
+      if (mainFoodCart.IsSuccess) {
+        selfMadeFoodOrderInfo = mainFoodCart.Value;
+        print(mainFoodCart.Message.toString());
+        notifyListeners();
+
+        final prefs = await SharedPreferences.getInstance();
+        _hashId = mainFoodCart.Value.HashFoodOrderId;
+
+        prefs.setString('hashId', _hashId);
+
+        return mainFoodCart.IsSuccess.toString();
+      } else {
+        print(mainFoodCart.Message.toString());
+
+        return mainFoodCart.Message;
+      }
+    } catch (error) {
+      print(error.toString());
+      notifyListeners();
+      throw error;
+    }
+  }
+
+  Future<String> getSelfMadeOrderCart() async {
+    print('getSelfMadeOrderCart');
+
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+    var _hashId = prefs.getString('hashId');
+    print(_hashId);
+    if (_hashId != null && _hashId != '') {
+      final url = Urls.rootUrl + Urls.getSelfMadeFoodToCartEndPoint + '?HashFoodOrderId=$_hashId';
+
+      try {
+        final response = await http.get(
+          url,
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'version': Urls.versionCode
+          },
+        );
+
+        final responseData = json.decode(response.body);
+
+        MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+
+        if (mainFoodCart.IsSuccess) {
+          selfMadeFoodOrderInfo = mainFoodCart.Value;
+          print(mainFoodCart.Message.toString());
+
+          final prefs = await SharedPreferences.getInstance();
+          _hashId = mainFoodCart.Value.HashFoodOrderId;
+
+          prefs.setString('hashId', _hashId);
+
+          notifyListeners();
+          return mainFoodCart.IsSuccess.toString();
+        } else if (!mainFoodCart.IsSuccess) {
+          if (mainFoodCart.Value.IsEmptyFoodOrder) {
+            prefs.setString('hashId', _hashId);
+            notifyListeners();
+            return "empty";
+          } else
+            return mainFoodCart.Message;
+        } else {
+          print(mainFoodCart.Message.toString());
+          return mainFoodCart.Message;
+        }
+      } catch (error) {
+        notifyListeners();
+        print(error.toString());
+        throw error;
+      }
+    } else {
+      selfMadeFoodOrderInfo = FoodOrderCart(
+          HashFoodOrderId: null,
+          IsEmptyFoodOrder: null,
+          OrderStatusTypes: null,
+          FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+      notifyListeners();
+      return 'No item in cart';
+    }
+  }
+
+  Future<String> finalizeSelfMadeOrderCart() async {
+    print('finalizeOrderCart');
+
+    final prefs = await SharedPreferences.getInstance();
+
+    var _token = prefs.getString('token');
+    print(_token);
+
+    var _hashId = prefs.getString('hashId');
+    print(_hashId);
+
+    final url = Urls.rootUrl + Urls.finalizeSelfMadeFoodToCartEndPoint;
+
+    print(url);
+
+    try {
+      final response = await http.post(url,
+          headers: {
+            'Authorization': 'Bearer $_token',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            // 'version': Urls.versionCode
+          },
+          body: jsonEncode({
+            "HashFoodOrderId": _hashId,
+          }));
+      print(response.body);
+
+      final responseData = json.decode(response.body);
+      print(responseData);
+
+      try {
+        MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
+        print('oookkkkkkkkkkkk');
+
+        if (mainFoodCart.IsSuccess) {
+          selfMadeFoodOrderInfo = FoodOrderCart(
+              HashFoodOrderId: null,
+              IsEmptyFoodOrder: null,
+              OrderStatusTypes: null,
+              FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+
+          print(mainFoodCart.Message.toString());
+
+          final prefs = await SharedPreferences.getInstance();
+
+          prefs.setString('hashId', '');
+          getFoodList();
+          notifyListeners();
+
+          return mainFoodCart.IsSuccess.toString();
+        } else {
+          print(mainFoodCart.Message.toString());
+
+          return mainFoodCart.Message;
+        }
+      } catch (error) {
+        notifyListeners();
+        print('sssssssssssssssssssssss');
+
+        return false.toString();
+      }
+    } catch (error) {
+      print(error.toString());
+      throw error;
+    }
+  }
+
 }
