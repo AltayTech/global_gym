@@ -62,6 +62,20 @@ class Urls {
   //get bills
   static const getSelfMadeFoodGroupEndPoint = '/v1/FoodProducts/SelfMadeMenuGroups/Read';
 
+  //add selfMade food to cart
+  static const addSelfMadeFoodToCartEndPoint = '/v1/Orders/SelfMadeFoodOrders/IncreaseCartItem/';
+
+  //decrease selfMade food from cart
+  static const decreaseSelfMadeFoodToCartEndPoint = '/v1/Orders/SelfMadeFoodOrders/DecreaseCartItem/';
+
+  //remove selfMade food from cart
+  static const removeSelfMadeFoodFromCartEndPoint = '/v1/Orders/SelfMadeFoodOrders/RemoveCartItem/';
+
+  //finalize selfMade food cart
+  static const finalizeSelfMadeFoodToCartEndPoint = '/v1/Orders/SelfMadeFoodOrders/Finalize/';
+
+  //get selfMade food cart
+  static const getSelfMadeFoodToCartEndPoint = '/v1/Orders/SelfMadeFoodOrders/Read/';
 
 
 
