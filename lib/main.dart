@@ -64,10 +64,13 @@ class _MyAppState extends State<MyApp> {
           ),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: Strings.appTitle,
           theme: ThemeData(
               primaryColor: Colors.orange,
               accentColor: Colors.orange[200],
+              focusColor: Colors.orange[100],
+              splashColor: Colors.transparent,
               backgroundColor: AppTheme.bg,
               textTheme: AppTheme.textTheme,
               appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Colors.black))),

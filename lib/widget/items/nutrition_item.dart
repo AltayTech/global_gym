@@ -33,8 +33,9 @@ class NutritionItem extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Image.network(
-                    nutrition.PicPath,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: "assets/images/diet_item_sample_pic.png",
+                    image: nutrition.PicPath,
                     height: 60,
                     width: 60,
                   ),

@@ -89,8 +89,7 @@ class _UserRegisterSurveyCompleteScreenState
                                 height: 25,
                                 child: Checkbox(
                                   onChanged: (value) {
-                                    checkAgreement =
-                                        checkAgreement ? false : true;
+                                    checkAgreement = value;
 
                                     setState(() {});
                                   },
@@ -124,6 +123,7 @@ class _UserRegisterSurveyCompleteScreenState
                           padding: const EdgeInsets.only(top: 16,bottom:109 ),
                           child: InkWell(
                             onTap: () {
+                              if(checkAgreement)
                               Navigator.of(context)
                                   .pushNamed(UserRegisterInfoScreen.routeName);
                             },
@@ -156,29 +156,6 @@ class _UserRegisterSurveyCompleteScreenState
                     ),
                   ),
                 ),
-                // Positioned(
-                //   top: 0,
-                //   bottom: 0,
-                //   left: 0,
-                //   right: 0,
-                //   child: Align(
-                //     alignment: Alignment.center,
-                //     child: _isLoading
-                //         ? SpinKitFadingCircle(
-                //             itemBuilder: (BuildContext context, int index) {
-                //               return DecoratedBox(
-                //                 decoration: BoxDecoration(
-                //                   shape: BoxShape.circle,
-                //                   color: index.isEven
-                //                       ? AppTheme.spinerColor
-                //                       : AppTheme.spinerColor,
-                //                 ),
-                //               );
-                //             },
-                //           )
-                //         : Container(),
-                //   ),
-                // ),
               ],
             ),
           ),

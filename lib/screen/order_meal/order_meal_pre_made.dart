@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:global_gym/classes/media_query_helper.dart';
+import 'package:global_gym/models/ordeMealSelfMade/FoodSelfMade.dart';
 import 'package:global_gym/models/orderMeal/Food.dart';
+import 'package:global_gym/models/orderMeal/FoodOrder.dart';
+import 'package:global_gym/models/orderMeal/FoodOrderCart.dart';
 import 'package:global_gym/provider/dimention.dart';
 import 'package:global_gym/provider/user_plans.dart';
 import 'package:global_gym/screen/order_meal/cart_screen.dart';
@@ -9,6 +12,7 @@ import 'package:global_gym/screen/user_profile/user_profile_screen.dart';
 import 'package:global_gym/widget/items/order_meal_item.dart';
 import 'package:global_gym/widget/items/progressWidget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class OrderMealPreMade extends StatefulWidget {
@@ -32,12 +36,6 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
   bool hideFAB = false;
 
   @override
-  void initState() {
-    Provider.of<UserPlans>(context, listen: false).getFoodList();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
@@ -54,7 +52,9 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    await Provider.of<UserPlans>(context, listen: false).getFoodGroupSelfMadeList();
+                    await clearSelectedSelfAndSelfCart(context);
                     Navigator.of(context).pushNamed(
                       OrderMealSelfMade.routeName,
                     );
@@ -178,9 +178,12 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
             ? ProgressWidget()
             : vm.foodGroupList.length > 0
                 ? ListView.builder(
-                    itemCount: foodList.length,
+                    itemCount: foodList.length+1,
                     padding: EdgeInsets.all(0),
                     itemBuilder: (ctx, index) {
+                      if(index == foodList.length)
+                        return SizedBox(height: 80,);
+                            else
                       return Container(
                         width: getWidth(context),
                         height: 130,
@@ -215,4 +218,18 @@ class _OrderMealPreMadeState extends State<OrderMealPreMade> {
       );
     }
   }
+
+
+}
+
+Future<void> clearSelectedSelfAndSelfCart(BuildContext context) async {
+
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString('selfMadeHashId', '');
+  Provider.of<UserPlans>(context, listen: false).selectedSelfMade = List<FoodSelfMade>.generate(3, (index) => null);
+  Provider.of<UserPlans>(context, listen: false).selfMadeFoodOrderCard = FoodOrderCart(
+      HashFoodOrderId: null,
+      IsEmptyFoodOrder: null,
+      OrderStatusTypes: null,
+      FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
 }

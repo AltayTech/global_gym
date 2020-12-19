@@ -150,11 +150,13 @@ class _UserChangePasswordScreenState extends State<UserChangePasswordScreen> {
                                 shrinkWrap: true,
                                 children: <Widget>[
                                   InfoEditItem(
+                                    obscureText : true,
                                     title: 'New Password',
                                     controller: passwordController,
                                     keyboardType: TextInputType.visiblePassword,
                                   ),
                                   InfoEditItem(
+                                    obscureText : true,
                                     title: 'Repeat Password',
                                     controller: rePasswordController,
                                     keyboardType: TextInputType.visiblePassword,

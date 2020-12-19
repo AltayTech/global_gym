@@ -215,7 +215,7 @@ class _UserRegisterInfoScreenState extends State<UserRegisterInfoScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
-                            'assets/images/survey_ic.png',
+                            'assets/images/login_header_ic.png',
                             height: 90,
                             width: 90,
                           ),
@@ -245,18 +245,21 @@ class _UserRegisterInfoScreenState extends State<UserRegisterInfoScreen> {
                                 children: <Widget>[
                                   InfoEditItem(
                                     title: 'Last Name',
+                                    maxLength: 100,
                                     controller: lastNameController,
                                     keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Given Name',
+                                    maxLength: 20,
                                     controller: givenNameController,
                                     keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Date of Birth',
+                                    hintText: "yyyy/mm/dd",
+                                    maxLength: 10,
                                     controller: dateOfBirthController,
-                                    keyboardType: TextInputType.datetime,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -333,32 +336,13 @@ class _UserRegisterInfoScreenState extends State<UserRegisterInfoScreen> {
                                   ),
                                   InfoEditItem(
                                     title: 'Phone number',
+                                    maxLength: 11,
                                     controller: phoneNumberController,
                                     keyboardType: TextInputType.phone,
                                   ),
-                                  InfoEditItem(
-                                    title: 'Line 1',
-                                    controller: line1Controller,
-                                    keyboardType: TextInputType.text,
-                                  ),
-                                  InfoEditItem(
-                                    title: 'Line 2',
-                                    controller: line2Controller,
-                                    keyboardType: TextInputType.text,
-                                  ),
-                                  InfoEditItem(
-                                    title: 'Subrub',
-                                    controller: subrubController,
-                                    keyboardType: TextInputType.text,
-                                  ),
-                                  InfoEditItem(
-                                    title: 'Postal Code',
-                                    controller: postalCodeController,
-                                    keyboardType: TextInputType.number,
-                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 8, bottom: 2, left: 4),
+                                        top: 20, bottom: 2, left: 4),
                                     child: Text(
                                       'Address',
                                       overflow: TextOverflow.ellipsis,
@@ -373,17 +357,60 @@ class _UserRegisterInfoScreenState extends State<UserRegisterInfoScreen> {
                                     ),
                                   ),
                                   InfoEditItem(
+                                    title: 'Line 1',
+                                    maxLength: 100,
+                                    controller: line1Controller,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                  InfoEditItem(
+                                    title: 'Line 2',
+                                    maxLength: 100,
+                                    controller: line2Controller,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                  InfoEditItem(
+                                    title: 'Subrub',
+                                    maxLength: 100,
+                                    controller: subrubController,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                  InfoEditItem(
+                                    title: 'Postal Code',
+                                    maxLength: 10,
+                                    controller: postalCodeController,
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20, bottom: 2, left: 4),
+                                    child: Text(
+                                      'Contact Emergency',
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontFamily: 'CircularStd',
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: textScaleFactor * 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                  InfoEditItem(
                                     title: 'Name',
+                                    maxLength: 100,
                                     controller: nameRelationController,
                                     keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Relation',
+                                    maxLength: 100,
                                     controller: relationController,
                                     keyboardType: TextInputType.text,
                                   ),
                                   InfoEditItem(
                                     title: 'Phone Number',
+                                    maxLength: 11,
                                     controller: phoneNumberRelationController,
                                     keyboardType: TextInputType.phone,
                                   ),

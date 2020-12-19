@@ -179,6 +179,7 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
                                     title: 'Password',
                                     controller: passwordController,
                                     keyboardType: TextInputType.visiblePassword,
+                                    obscureText : true,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(

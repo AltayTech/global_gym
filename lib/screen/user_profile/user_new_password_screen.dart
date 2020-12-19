@@ -154,10 +154,12 @@ class _UserNewPasswordScreenState extends State<UserNewPasswordScreen> {
                                 children: <Widget>[
                                   InfoEditItem(
                                     title: 'New Password',
+                                    obscureText : true,
                                     controller: passwordController,
                                     keyboardType: TextInputType.visiblePassword,
                                   ),
                                   InfoEditItem(
+                                    obscureText : true,
                                     title: 'Repeat Password',
                                     controller: rePasswordController,
                                     keyboardType: TextInputType.visiblePassword,

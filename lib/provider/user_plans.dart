@@ -691,7 +691,7 @@ class UserPlans with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> getBillList() async {
+  Future getBillList() async {
     print('getBillList');
 
     final prefs = await SharedPreferences.getInstance();
@@ -722,12 +722,12 @@ class UserPlans with ChangeNotifier {
       print('oookkkkkkkkkkkk');
 
       if (mainBill.IsSuccess) {
-        _billsList = mainBill.Value;
+        billsList = mainBill.Value;
 
         print(mainBill.Message.toString());
         // notifyListeners();
 
-        return mainBill.IsSuccess.toString();
+        return _billsList;
       } else {
         print(mainBill.Message.toString());
 
@@ -800,7 +800,7 @@ class UserPlans with ChangeNotifier {
 
   List<FoodGroupSelfMade> _foodGroupSelfMade = [];
 
-  Future<String> getFoodGroupSelfMadeList() async {
+  Future getFoodGroupSelfMadeList() async {
     print('getFoodGroupSelfMadeList');
 
     final prefs = await SharedPreferences.getInstance();
@@ -834,11 +834,11 @@ class UserPlans with ChangeNotifier {
         if (mainFoodGroupSelfeMade.IsSuccess) {
           notifyListeners();
 
-          _foodGroupSelfMade = mainFoodGroupSelfeMade.Value;
+          foodGroupSelfMade = mainFoodGroupSelfeMade.Value;
 
           print(mainFoodGroupSelfeMade.Message.toString());
 
-          return mainFoodGroupSelfeMade.IsSuccess.toString();
+          return foodGroupSelfMade;
         } else {
           print(mainFoodGroupSelfeMade.Message.toString());
 
@@ -858,12 +858,19 @@ class UserPlans with ChangeNotifier {
 
   List<FoodGroupSelfMade> get foodGroupSelfMade => _foodGroupSelfMade;
 
+  set foodGroupSelfMade(List<FoodGroupSelfMade> value) {
+    _foodGroupSelfMade = value;
+    notifyListeners();
+  }
+
+
   List<FoodSelfMade> _selectedSelfMade = List<FoodSelfMade>.generate(3, (index) => null);
 
   List<FoodSelfMade> get selectedSelfMade => _selectedSelfMade;
 
   set selectedSelfMade(List<FoodSelfMade> value) {
     _selectedSelfMade = value;
+    notifyListeners();
   }
 
   FoodOrderCart _historyOrderDetails;
@@ -912,7 +919,7 @@ class UserPlans with ChangeNotifier {
       HistoryFoodCartResponse mainHistoryFoodCart = HistoryFoodCartResponse.fromMap(responseData);
 
       if (mainHistoryFoodCart.IsSuccess) {
-        _historyOrderDetails = FoodOrderCart(
+        historyOrderDetails = FoodOrderCart(
           HashFoodOrderId: mainHistoryFoodCart.Value.HashId,
           IsEmptyFoodOrder: false,
           OrderStatusTypes: mainHistoryFoodCart.Value.OrderStatusTypes,
@@ -972,7 +979,7 @@ class UserPlans with ChangeNotifier {
       MainHistoryFoodCart mainFoodCart = MainHistoryFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        _historyOrderDetails = mainFoodCart.Value;
+        historyOrderDetails = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
         notifyListeners();
 
@@ -1024,7 +1031,7 @@ class UserPlans with ChangeNotifier {
       MainHistoryFoodCart mainFoodCart = MainHistoryFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        _historyOrderDetails = mainFoodCart.Value;
+        historyOrderDetails = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
         notifyListeners();
 
@@ -1077,7 +1084,7 @@ class UserPlans with ChangeNotifier {
       MainHistoryFoodCart mainFoodCart = MainHistoryFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        _historyOrderDetails = mainFoodCart.Value;
+        historyOrderDetails = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
         notifyListeners();
 
@@ -1098,13 +1105,22 @@ class UserPlans with ChangeNotifier {
       throw error;
     }
   }
-
-
-
-
+  
 
   List<FoodCart> selfMadeMealItemList = [];
-  FoodOrderCart selfMadeFoodOrderInfo;
+  FoodOrderCart _selfMadeFoodOrderCard = FoodOrderCart(
+      HashFoodOrderId: null,
+      IsEmptyFoodOrder: null,
+      OrderStatusTypes: null,
+      FoodOrderInfo: FoodOrder(FoodOrderDetails: []));
+
+  FoodOrderCart get selfMadeFoodOrderCard => _selfMadeFoodOrderCard;
+
+  set selfMadeFoodOrderCard(FoodOrderCart selfMadeFoodOrderInfo) {
+    _selfMadeFoodOrderCard = selfMadeFoodOrderInfo;
+    notifyListeners();
+  }
+
   Future<String> addSelfMadeFoodToCart(int foodId) async {
     print('addSelfMadeFoodToCart');
 
@@ -1116,9 +1132,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    var _hashId = prefs.getString('hashId');
-    print(_hashId);
-    print(foodId);
+    var _hashId = prefs.getString('selfMadeHashId');
 
     try {
       final response = await http.post(url,
@@ -1139,13 +1153,12 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        selfMadeFoodOrderInfo = mainFoodCart.Value;
+        selfMadeFoodOrderCard = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
-        notifyListeners();
 
         final prefs = await SharedPreferences.getInstance();
         _hashId = mainFoodCart.Value.HashFoodOrderId;
-        prefs.setString('hashId', _hashId);
+        prefs.setString('selfMadeHashId', _hashId);
 
         return mainFoodCart.IsSuccess.toString();
       } else {
@@ -1170,7 +1183,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    var _hashId = prefs.getString('hashId');
+    var _hashId = prefs.getString('selfMadeHashId');
     print(_hashId);
 
     try {
@@ -1192,14 +1205,13 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        selfMadeFoodOrderInfo = mainFoodCart.Value;
+        selfMadeFoodOrderCard = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
-        notifyListeners();
 
         final prefs = await SharedPreferences.getInstance();
         _hashId = mainFoodCart.Value.HashFoodOrderId;
 
-        prefs.setString('hashId', _hashId);
+        prefs.setString('selfMadeHashId', _hashId);
 
         return mainFoodCart.IsSuccess.toString();
       } else {
@@ -1225,7 +1237,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    var _hashId = prefs.getString('hashId');
+    var _hashId = prefs.getString('selfMadeHashId');
 
     try {
       final response = await http.post(url,
@@ -1246,14 +1258,13 @@ class UserPlans with ChangeNotifier {
       MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
       if (mainFoodCart.IsSuccess) {
-        selfMadeFoodOrderInfo = mainFoodCart.Value;
+        selfMadeFoodOrderCard = mainFoodCart.Value;
         print(mainFoodCart.Message.toString());
-        notifyListeners();
 
         final prefs = await SharedPreferences.getInstance();
         _hashId = mainFoodCart.Value.HashFoodOrderId;
 
-        prefs.setString('hashId', _hashId);
+        prefs.setString('selfMadeHashId', _hashId);
 
         return mainFoodCart.IsSuccess.toString();
       } else {
@@ -1276,7 +1287,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    var _hashId = prefs.getString('hashId');
+    var _hashId = prefs.getString('selfMadeHashId');
     print(_hashId);
     if (_hashId != null && _hashId != '') {
       final url = Urls.rootUrl + Urls.getSelfMadeFoodToCartEndPoint + '?HashFoodOrderId=$_hashId';
@@ -1297,13 +1308,13 @@ class UserPlans with ChangeNotifier {
         MainFoodCart mainFoodCart = MainFoodCart.fromMap(responseData);
 
         if (mainFoodCart.IsSuccess) {
-          selfMadeFoodOrderInfo = mainFoodCart.Value;
+          selfMadeFoodOrderCard = mainFoodCart.Value;
           print(mainFoodCart.Message.toString());
 
           final prefs = await SharedPreferences.getInstance();
           _hashId = mainFoodCart.Value.HashFoodOrderId;
 
-          prefs.setString('hashId', _hashId);
+          prefs.setString('selfMadeHashId', _hashId);
 
           notifyListeners();
           return mainFoodCart.IsSuccess.toString();
@@ -1324,7 +1335,7 @@ class UserPlans with ChangeNotifier {
         throw error;
       }
     } else {
-      selfMadeFoodOrderInfo = FoodOrderCart(
+      selfMadeFoodOrderCard = FoodOrderCart(
           HashFoodOrderId: null,
           IsEmptyFoodOrder: null,
           OrderStatusTypes: null,
@@ -1342,7 +1353,7 @@ class UserPlans with ChangeNotifier {
     var _token = prefs.getString('token');
     print(_token);
 
-    var _hashId = prefs.getString('hashId');
+    var _hashId = prefs.getString('selfMadeHashId');
     print(_hashId);
 
     final url = Urls.rootUrl + Urls.finalizeSelfMadeFoodToCartEndPoint;
@@ -1370,7 +1381,7 @@ class UserPlans with ChangeNotifier {
         print('oookkkkkkkkkkkk');
 
         if (mainFoodCart.IsSuccess) {
-          selfMadeFoodOrderInfo = FoodOrderCart(
+          selfMadeFoodOrderCard = FoodOrderCart(
               HashFoodOrderId: null,
               IsEmptyFoodOrder: null,
               OrderStatusTypes: null,
@@ -1380,9 +1391,7 @@ class UserPlans with ChangeNotifier {
 
           final prefs = await SharedPreferences.getInstance();
 
-          prefs.setString('hashId', '');
-          getFoodList();
-          notifyListeners();
+          prefs.setString('selfMadeHashId', '');
 
           return mainFoodCart.IsSuccess.toString();
         } else {

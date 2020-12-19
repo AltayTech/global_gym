@@ -19,7 +19,7 @@ dependencies:
   smooth_star_rating: ^1.0.4+2
   flutter_spinkit: ^4.1.1
   url_launcher: ^5.4.5
-  carousel_slider: ^2.1.0
+  carousel_slider: ^2.3.1
   fluttertoast: ^7.0.2
   numberpicker: ^1.2.1
   table_calendar: ^2.3.0

@@ -4,19 +4,26 @@ import 'package:global_gym/classes/media_query_helper.dart';
 import 'package:global_gym/provider/app_theme.dart';
 
 class InfoEditItem extends StatelessWidget {
-
   const InfoEditItem({
     Key key,
     @required this.title,
     @required this.controller,
     @required this.keyboardType,
+    this.maxLength,
+    this.hintText,
+    this.onChange,
+    this.obscureText,
     this.validateMessage = 'Please Enter Correct value',
   }) : super(key: key);
 
   final String title;
+  final String hintText;
   final TextEditingController controller;
   final TextInputType keyboardType;
   final String validateMessage;
+  final Function onChange;
+  final int maxLength;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class InfoEditItem extends StatelessWidget {
     return Container(
 //      width: deviceWidth * 0.8,
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        // color: AppTheme.white,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Padding(
@@ -48,9 +55,14 @@ class InfoEditItem extends StatelessWidget {
                 ),
               ),
               Container(
-                color: Colors.blue.withOpacity(0.05),
+                // color: Colors.red,
                 child: TextFormField(
+                  obscureText: obscureText != null ? obscureText : false,
+                  maxLength: maxLength,
                   keyboardType: keyboardType,
+                  onChanged: (v) {
+                    onChange(v);
+                  },
                   onEditingComplete: () {},
                   validator: (value) {
                     if (value.isEmpty) {
@@ -64,11 +76,17 @@ class InfoEditItem extends StatelessWidget {
                   },
                   controller: controller,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.transparent,
+                    hintText: hintText,
+                    counterText: "",
                     contentPadding: EdgeInsets.only(right: 8, left: 8),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(0),
-                      borderSide: BorderSide(width: 0,color: Colors.white),
+                      borderSide: BorderSide(width: 0, color: Colors.white),
                     ),
+                    // filled: true,
+                    // fillColor: Colors.white,
                     labelStyle: TextStyle(
                       color: Colors.blue,
                       fontFamily: 'CircularStd',

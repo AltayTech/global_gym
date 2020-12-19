@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:global_gym/models/ordeMealSelfMade/FoodSelfMade.dart';
 import 'package:global_gym/models/orderMeal/FoodCart.dart';
 import 'package:global_gym/provider/app_theme.dart';
 import 'package:global_gym/provider/user_plans.dart';
@@ -9,23 +8,30 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 class OrderMealSelfMadeItem extends StatefulWidget {
-  final FoodSelfMade food;
+  final FoodCart food;
+  final Function fcn;
 
-  OrderMealSelfMadeItem({this.food});
+  OrderMealSelfMadeItem({
+    this.food,
+    this.fcn,
+  });
 
   @override
-  _OrderMealSelfMadeItemState createState() => _OrderMealSelfMadeItemState();
+  _OrderCartItemState createState() => _OrderCartItemState();
 }
 
-class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
+class _OrderCartItemState extends State<OrderMealSelfMadeItem> {
   int productCount = 0;
+
   bool _isLoading = false;
+
 
   Future<String> addToCart(int foodId) async {
     _isLoading = true;
     setState(() {});
 
-    String isSent = await Provider.of<UserPlans>(context, listen: false).addSelfMadeFoodToCart(foodId);
+    String isSent = await Provider.of<UserPlans>(context, listen: false)
+        .addSelfMadeFoodToCart(foodId);
     print(isSent);
     _isLoading = false;
     setState(() {});
@@ -36,7 +42,8 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
     _isLoading = true;
     setState(() {});
 
-    String isSent = await Provider.of<UserPlans>(context, listen: false).decreaseSelfMadeFoodToCart(foodId);
+    String isSent = await Provider.of<UserPlans>(context, listen: false)
+        .decreaseSelfMadeFoodToCart(foodId);
     _isLoading = false;
     setState(() {});
     return isSent;
@@ -45,12 +52,14 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
   Future<String> removeFromCart(int foodId) async {
     _isLoading = true;
     setState(() {});
+    String isSent = await Provider.of<UserPlans>(context, listen: false)
+        .removeSelfMadeFoodFromCart(foodId);
 
-    String isSent = await Provider.of<UserPlans>(context, listen: false).removeSelfMadeFoodFromCart(foodId);
     _isLoading = false;
     setState(() {});
     return isSent;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +67,16 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var currencyFormat = intl.NumberFormat.decimalPattern();
+
     final vm = Provider.of<UserPlans>(context);
 
-    if (vm.foodOrderInfo != null && vm.foodOrderInfo.FoodOrderInfo != null) {
-      List<FoodCart> foodCart = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails;
+    if(vm.selfMadeFoodOrderCard!=null && vm.selfMadeFoodOrderCard.FoodOrderInfo != null) {
+      List<FoodCart> foodCart = vm.selfMadeFoodOrderCard.FoodOrderInfo.FoodOrderDetails;
 
-      if (foodCart.map((e) => e.FoodId).contains(widget.food.Id))
-        productCount = vm.foodOrderInfo.FoodOrderInfo.FoodOrderDetails
-            .firstWhere((element) => element.FoodId == widget.food.Id)
+      if (foodCart.map((e) => e.FoodId).contains(widget.food.FoodId))
+        productCount = vm.selfMadeFoodOrderCard.FoodOrderInfo.FoodOrderDetails
+            .firstWhere((element) => element.FoodId == widget.food.FoodId)
             .Quantity;
-      else
-        productCount = 0;
     }
 
     return Padding(
@@ -87,7 +95,7 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
                 children: [
                   FadeInImage.assetNetwork(
                     placeholder: 'assets/images/meal_item_sample_pic.png',
-                    image: widget.food.PicPath,
+                    image: widget.food.FoodPicPath,
                     height: 110,
                     width: 110,
                     fit: BoxFit.cover,
@@ -100,7 +108,7 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.food.Name,
+                              widget.food.FoodName,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               maxLines: 1,
@@ -129,86 +137,65 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
                                   ),
                                 ),
                                 Spacer(),
-                                productCount == 0
-                                    ? Container(
-                                        height: 40,
-                                        width: 40,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: InkWell(
-                                              onTap: () async {
-                                                addToCart(widget.food.Id);
-                                              },
-                                              child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(2),
-                                                      color: Colors.white,
-                                                      border: Border.all(color: Colors.grey.withOpacity(0.5))),
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.black,
-                                                  )),
-                                            )),
-                                          ],
-                                        ),
-                                      )
-                                    : Container(
-                                        height: 40,
-                                        width: 100,
-                                        color: Colors.amber,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  if (productCount > 1)
-                                                    decreaseFromCart(widget.food.Id);
-                                                  else
-                                                    removeFromCart(widget.food.Id);
-                                                },
-                                                child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  child: Icon(
-                                                    Icons.remove,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
+                                Container(
+                                  height: 40,
+                                  width: 100,
+                                  color: Colors.amber,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            if (productCount > 1) {
+                                              decreaseFromCart(
+                                                  widget.food.FoodId);
+                                            } else {
+                                              removeFromCart(
+                                                  widget.food.FoodId);
+                                            }
+                                          },
+                                          child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            child: Icon(
+                                              productCount > 1
+                                                  ? Icons.remove
+                                                  : Icons.delete,
+                                              color: Colors.black,
                                             ),
-                                            Expanded(
-                                              child: Text(
-                                                productCount.toString(),
-                                                style: TextStyle(
-                                                  color: AppTheme.black,
-                                                  fontSize: textScaleFactor * 14,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                            Expanded(
-                                                child: InkWell(
-                                              onTap: () async {
-                                                addToCart(widget.food.Id);
-                                              },
-                                              child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.black,
-                                                  )),
-                                            )),
-                                          ],
+                                          ),
                                         ),
-                                      )
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          productCount.toString(),
+                                          style: TextStyle(
+                                            color: AppTheme.black,
+                                            fontSize: textScaleFactor * 14,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      Expanded(
+                                          child: InkWell(
+                                        onTap: () async {
+                                          addToCart(widget.food.FoodId);
+                                        },
+                                        child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.black,
+                                            )),
+                                      )),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -233,7 +220,9 @@ class _OrderMealSelfMadeItemState extends State<OrderMealSelfMadeItem> {
                         return DecoratedBox(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: index.isEven ? AppTheme.spinerColor : AppTheme.spinerColor,
+                            color: index.isEven
+                                ? AppTheme.spinerColor
+                                : AppTheme.spinerColor,
                           ),
                         );
                       },

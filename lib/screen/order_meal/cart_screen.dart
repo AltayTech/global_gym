@@ -43,8 +43,7 @@ class _CartScreenState extends State<CartScreen> {
       var foodOrderCart = vm.foodOrderInfo;
       return Container(
         padding: EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
+        child:
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -189,8 +188,6 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
-          ],
-        ),
       );
     }
   }

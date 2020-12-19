@@ -57,16 +57,14 @@ class MealItem extends StatelessWidget {
                     children: [
                       Container(
                         padding: EdgeInsets.only(left: 8),
-                        child: Expanded(
-                          child: Text(
-                            '${meal.MealName}',
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: textScaleFactor * 14.0,
-                            ),
+                        child: Text(
+                          '${meal.MealName}',
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: textScaleFactor * 14.0,
                           ),
                         ),
                       ),
@@ -113,7 +111,7 @@ class MealItem extends StatelessWidget {
 
                       itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
                         value: meal.Nuitritions[i],
-                        child: Container(width: 30, height: 30, child: Image.network(meal.Nuitritions[i].PicPath)),
+                        child: Container(width: 30, height: 30, child: FadeInImage.assetNetwork(placeholder: "assets/images/diet_item_sample_pic.png",image: meal.Nuitritions[i].PicPath,)),
                       ),
                     ),
                   ),

@@ -12,25 +12,19 @@ class BillsScreen extends StatelessWidget {
 
   String token;
 
-  double billsTotalStatus;
-
-  Future<String> getBills(BuildContext context) async {
-    String isSent = await Provider.of<UserPlans>(context, listen: false).getBillList();
-    return isSent;
+  Future getBills(BuildContext context) async {
+    var futureData = await Provider.of<UserPlans>(context, listen: false).getBillList();
+    return futureData;
   }
 
   @override
   Widget build(BuildContext context) {
-    getBills(context);
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    final vm = Provider.of<UserPlans>(context);
     const Color _kKeyUmbraOpacity = Color(0x33000000); // alpha = 0.2
     const Color _kKeyPenumbraOpacity = Color(0x24000000); // alpha = 0.14
     const Color _kAmbientShadowOpacity = Color(0x1F000000); // alpha = 0.12
-    billsTotalStatus = 0;
-    totalStatus(vm.billsList);
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
@@ -100,26 +94,29 @@ class BillsScreen extends StatelessWidget {
                         child: FutureBuilder(
                         future: getBills(context),
                         builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                            AsyncSnapshot snapshot) {
                           if(snapshot.connectionState == ConnectionState.waiting)
                             return ProgressWidget();
                           else  {
                             if (snapshot.hasData) {
+                              final billsList = snapshot.data as List<Bill>;
                               return Container(
-                                  child: vm.billsList.length > 0
+                                  child: billsList.length > 0
                                       ? ListView.builder(
                                           // controller: _scrollController,
                                           // scrollDirection: Axis.vertical,
-                                          itemCount: vm.billsList.length,
+                                          itemCount: billsList.length,
                                           padding: EdgeInsets.all(0),
-                                          itemBuilder: (ctx, i) => Container(
+                                          itemBuilder: (ctx, i) {
+                                            return Container(
                                             padding: EdgeInsets.only(bottom: 6),
                                             width: deviceWidth,
                                             height: 135,
                                             child: BillScreenItem(
-                                              bill: vm.billsList[i],
+                                              bill: billsList[i],
                                             ),
-                                          ),
+                                          );
+                                          },
                                         )
                                       : Center(
                                           child: Padding(
@@ -187,13 +184,40 @@ class BillsScreen extends StatelessWidget {
                   fontSize: textScaleFactor * 16.0,
                 ),
               ),
-              Text(
-                "Debtor $billsTotalStatus\$",
-                style: TextStyle(
-                    color: AppTheme.black,
-                    fontSize: textScaleFactor * 16.0,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold),
+              FutureBuilder(
+                future: getBills(context),
+                builder: (BuildContext context,
+                    AsyncSnapshot snapshot) {
+                  if(snapshot.connectionState == ConnectionState.waiting)
+                    return Text(
+                      "Debtor 0\$",
+                      style: TextStyle(
+                          color: AppTheme.black,
+                          fontSize: textScaleFactor * 16.0,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold),
+                    );
+                  else  {
+                    if (snapshot.hasData) {
+                      return Text(
+                        "Debtor ${totalStatus(snapshot.data as List<Bill>)}\$",
+                        style: TextStyle(
+                            color: AppTheme.black,
+                            fontSize: textScaleFactor * 16.0,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold),
+                      );
+                    } else
+                      return Text(
+                        "Debtor 0\$",
+                        style: TextStyle(
+                            color: AppTheme.black,
+                            fontSize: textScaleFactor * 16.0,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold),
+                      );
+                  }
+                },
               ),
             ],
           ),
@@ -202,10 +226,15 @@ class BillsScreen extends StatelessWidget {
     );
   }
 
-  void totalStatus(List<Bill> billsList) {
+  double totalStatus(List<Bill> billsList) {
+    double billsTotalStatus = 0;
+
     if (billsList != null)
       billsList.forEach((element) {
+
         billsTotalStatus += element.Price;
       });
+
+    return billsTotalStatus;
   }
 }
