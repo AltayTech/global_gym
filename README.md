@@ -1,16 +1,25 @@
-# global_gym
+# Global gym
 
-A new Flutter application.
+Application as virtual gym. 
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# Screanshots
+ 
 
-A few resources to get you started if this is your first Flutter project:
+<img src="screenshots%2Fhome%20page.png" style="width: 200px;">    <img src="screenshots%2FMembership.png" style="width: 200px; ">   <img src="screenshots%2FMonday%20Exercise%20.png" style="width: 200px; ">
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+<img src="screenshots%2FMy%20Appointment.png" style="width: 200px;"> <img src="screenshots%2FMy%20Diet.png" style="width: 200px; ">     <img src="screenshots%2FMy%20Diet%20detail.png" style="width: 200px; "> 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="screenshots%2FMy%20Exercise.png" style="width: 200px;"> <img src="screenshots%2FMy%20Measurment%20detail.png" style="width: 200px; ">     <img src="screenshots%2FOrder%20History.png" style="width: 200px; "> 
+
+<img src="screenshots%2FOrder%20Meal%20closed.png" style="width: 200px;"> <img src="screenshots%2FOrder%20Meal%20Pre%20Made.png" style="width: 200px; ">     <img src="screenshots%2FOrder%20Meal%20Self%20Made.png" style="width: 200px; "> 
+
+<img src="screenshots%2FOrder%20Meal%20Self%20Made%20select%20Protein.png" style="width: 200px;"> <img src="screenshots%2FRejected.png" style="width: 200px; "> 
+
+
+# Techincal information
+This app developed in flutter framework and dart programming.
+
+State management which is used in this app is provider.
+
+For location and map service we used google map api.
